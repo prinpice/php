@@ -1,5 +1,7 @@
 # php
 
+http://tcpschool.com/php/intro
+
 ## 스타일
 
 ```php
@@ -7,6 +9,18 @@
     
 ?>
 ```
+
+## 문법
+
+* 명령문은 세미콜론(;)으로 끝남
+  * 코드가 종료되면 자동으로 세미콜론을 적용해주기 때문에 마지막 명령문의 세미콜론은 생략가능
+* php 크도 영역을 나타내는 종료 태그 생략가능
+
+## PHP 표현식(expressions)
+
+* 가장 중요한 구성요소
+* 모든것이 값을 갖는다는 의미
+* 변수, 상수, 함수, 제어문, 명령문 등 거의 모든것이 표현식에 속함
 
 ## 변수(variable)
 
@@ -731,5 +745,2486 @@
 
 ### 논리 연산자
 
+* 논리 연산자(logical operator)
 
+  * 논리식을 판단함
+  * true와 false를 반환함
+  * `and`, `or`, `xor`
+    * 두 개의 피연산자를 가지는 이항 연산자
+    * 피연산자들의 결합 방향 : 왼쪽에서 오른쪽
+  * `!`
+    * 한 개의 피연산자를 가지는 단항 연산자
+    * 피연산자들의 결합 방향 : 오른쪽에서 왼쪽
+
+  | 논리 연산자 | 설명                                                         |
+  | :---------: | ------------------------------------------------------------ |
+  |     and     | 논리식이 모두 참이면 참을 반환함(AND 연산)                   |
+  |     or      | 논리식 중에서 하나라도 참이면 참을 반환함(OR 연산)           |
+  |     xor     | 논리식이 서로 다르면 참을 반환함(XOR 연산)                   |
+  |     &&      | 논리식이 모두 참이면 참을 반환함(AND 연산)                   |
+  |    \|\|     | 논리식 중에서 하나라도 참이면 참을 반환함(OR 연산)           |
+  |      !      | 논리식의 결과가 참이면 거짓을, 거짓이면 참을 반환함(NOT 연산) |
+
+  * `and`와 `&&` 연산자, `or`와 `||`연산자는 정확히 같은 동작을 하며, 연산자의 우선순위에서만 차이가 발생함
+
+  * truth table
+
+    | A     | B     | A and B (A && B) | A or B (A \|\| B) | A xor B | !A    |
+    | ----- | ----- | ---------------- | ----------------- | ------- | ----- |
+    | true  | true  | true             | true              | false   | false |
+    | true  | false | false            | true              | true    | false |
+    | false | true  | false            | true              | true    | true  |
+    | false | false | false            | false             | false   | true  |
+
+    ```php
+    $num1 = true;
+    $num2 = false;
+    
+    var_dump($num1 and $num2);      // true and false -> false // bool(false)
+    var_dump($num1 or $num2);       // true or false -> true // bool(true)
+    var_dump($num1 xor $num2);      // true xor false -> true // bool(true)
+    var_dump( (3 < 5) or ("12" > 20) ); // true or false -> true // bool(true)
+    ```
+
+### 비트 연산자
+
+* 비트 연산자(bitwise operator)
+
+  * 비트(bit) 단위로 논리 연산을 수행함
+  * 비트 단위로 전체 비트를 왼쪽이나 오른쪽으로 이동시킬 때 사용
+
+  | 비트 연산자 | 설명                                                         |
+  | :---------: | ------------------------------------------------------------ |
+  |      &      | 대응되는 비트가 모두 1이면 1을 반환함(비트 AND 연산)         |
+  |     \|      | 대응되는 비트 중에서 하나라도 1이면 1을 반환함(비트 OR 연산) |
+  |      ^      | 대응되는 비트가 서로 다르면 1을 반환함(비트 XOR 연산)        |
+  |      ~      | 비트를 1이면 0으로, 0이면 1로 반전시킴(비트 NOT 연산)        |
+  |     <<      | 지정한 수만큼 비트를 전부 왼쪽으로 이동시킴(left shift 연산) |
+  |     >>      | 부호를 유지하면서 지정한 수만큼 비트를 전부 오른쪽으로 이동시킴(right shift 연산) |
+
+  * 비트 AND 연산
+
+    ```
+    00001111 & 00010101 => 00000101
+    ```
+
+  * 비트 OR 연산자
+
+    ```
+    00001111 & 00010101 => 00011111
+    ```
+
+  * 비트 XOR 연산자
+
+    ```
+    00001111 ^ 00010101 => 00011010
+    ```
+
+  * 비트 NOT 연산자
+
+    ```
+    ~ 00001111 => 11110000
+    ```
+
+  ```php
+  $num1 = 15;
+  $num2 = 8;
+  
+  echo "~ 연산자에 의한 결괏값은 ".(~$num1)."입니다.";    // 1의 보수 // ~ 연산자에 의한 결괏값은 -16입니다.
+  echo "<< 연산자에 의한 결괏값은 ".($num2<<1)."입니다."; // 곱하기 2 // << 연산자에 의한 결괏값은 16입니다.
+  echo ">> 연산자에 의한 결괏값은 ".($num2>>1)."입니다.";     // 나누기 2 // >> 연산자에 의한 결괏값은 4입니다.
+  ```
+
+### 기타 연산자
+
+* 삼항 연산자(ternary operator)
+
+  * 세 개의 피연산자를 가지는 조건연산자
+
+  * 문법
+
+    * 조건식의 결과가 true면 return값1을 반환하고, false이면 return값2를 반환함
+
+    ```php
+    조건식 ? return값1 : return값2
+    ```
+
+  ```php
+  $num1 = 15;
+  $num2 = 8;
+  $result = ($num1 > $num2) ? $num1 : $num2;
+  
+  echo "둘 중에 더 큰수는 {$result}입니다."; // 둘 중에 더 큰수는 15입니다.
+  ```
+
+* 문자열 연산자(string operator)
+
+  * 양쪽에 위치한 두 문자열을 연결해 주는 연산자
+  * `.`
+  * `echo()` 함수에서는 쉼표 연산자(`,`)를 이용하여 문자열 연결 가능
+
+  ```php
+  $str1 = "HELLO ";
+  $str2 = "PHP";
+  
+  echo "두 문자열을 합친 문자열은 '".($str1.$str2)."'입니다."; // 두 문자열을 합친 문자열은 'HELLO PHP'입니다.
+  
+  echo $str1, $str2; // HELLO PHP
+  ```
+
+* 배열 합집합 연산자(array union operator)
+
+  * 피연산자로 오는 두 배열의 합집합을 반환함
+
+  * `+`
+
+  * 두 개의 피 연산자의 key가 동일한 경우 왼쪽 피연산자의 value가 적용됨
+
+    ```php
+    $arr1 = array("1st" => "PHP", "2nd" => "MySQL");
+    $arr2 = array("1st" => "HTML", "2nd" => "CSS", "3rd" => "JavaScript");
+    $arr3 = array("3rd" => "HTML", "4th" => "CSS", "5th" => "MySQL");
+    
+    $result1 = $arr1 + $arr2; // [PHP, MySQL, JavaScript]
+    var_dump($result1);
+    $result2 = $arr2 + $arr1; // [HTML, CSS, JavaScript]
+    var_dump($result2);
+    $result3 = $arr1 + $arr3; // [PHP, MySQL, HTML, CSS, MySQL]
+    var_dump($result3);
+    ```
+
+* instanceof 연산자
+
+  * 해당 변수가 어떤 class에서 생성된 object인지 확인함
+  * 해당 변수가 부모 클래스(parent class)에서 상속받은 클래스인지 확인함
+  * 해당 변수가 클래스의 인스턴스(instance)인지 아닌지를 확인함
+  * 해당 변수가 인터베이스(interface)로 구현한 클래스의 객체 인스턴스(object instance)인지 아닌지를 확인함
+
+  ```php
+  interface Interface01
+  
+  {
+  }
+  class Class01
+  
+  {
+  }
+  class Class02 extends Class01 implements Interface01
+  
+  {
+  }
+  
+  /* 어떤 클래스(class)에서 생성된 객체(object)인지를 확인할 때 */
+  $var1 = new Class01; // Class01 클래스 객체를 생성함.
+  var_dump($var1 instanceof Class01);     // bool(true)
+  var_dump($var1 instanceof Class02);     // bool(false)
+  
+  /* 부모 클래스(parent class)에서 상속받은 클래스인지를 확인할 때 */
+  $var2 = new Class02; // Class02 클래스 객체를 생성함.
+  var_dump($var2 instanceof Class01);     // bool(true)
+  var_dump($var2 instanceof Class02);     // bool(true)
+  
+  /* 클래스의 인스턴스(instance)인지 아닌지를 확인할 때 */
+  $var3 = new Class01; // Class01 클래스 객체를 생성함.
+  var_dump(!($var3 instanceof Class02)); // instance가 아님  // bool(true)
+  
+  /* 인터페이스(interface)로 구현한 클래스의 객체 인스턴스(object instance)인지 아닌지를 확인할 때 */
+  $var4 = new Class02; // Class02 클래스 객체를 생성함.
+  var_dump($var4 instanceof Class02);     // bool(true)
+  var_dump($var4 instanceof Interface01); // bool(true)
+  ```
+
+## 제어문
+
+* 프로그램의 순차적인 흐름을 제어해야 할 때 사용하는 명령문
+* 조건문, 반복문 등 포함됨
+
+  ### 조건문
+
+* 프로그램 내에서 주어진 조건식의 결과에 따라 별도의 명령을 수행하도록 제어하는 명령문
+
+#### if/else/elseif 문
+
+* if문
+
+  * 조건식의 결과가 true면 주어진 명령문을 실행하고, false이면 아무것도 실행하지 않음
+
+  * 하나의 조건문 안에서 한 번만 사용 가능
+
+  * 문법
+
+    ```php
+    if (조건식) {
+        조건식의 결과가 참일 때 실행하고자 하는 명령문;
+    }
+    ```
+
+  * if문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+  ```php
+  $num1 = 10;
+  $num2 = 20;
+  if ($num1 == $num2) {
+      echo "{$num1}과 {$num2}은 같은 수입니다.";
+  }
+  if ($num1 < $num2) {
+      echo "{$num1}은 {$num2}보다 작은 수입니다."; // 10은 20보다 작은 수입니다.
+  }
+  if ($num1 > $num2) // 실행될 명령문이 한 줄뿐이라면 중괄호({})를 생략할 수 있음.
+      echo "{$num1}은 {$num2}보다 큰 수입니다.";
+  ```
+
+* else문
+
+  * if문과 같이 사용함
+
+  * if문의 조건식 결과가 false일 때 주어진 명령문을 실행함
+
+  * 하나의 조건문 안에서 한 번만 사용 가능
+
+  * 문법
+
+    ```php
+    if (조건식) {
+        조건식의 결과가 참일 때 실행하고자 하는 명령문;
+    }
+    else {
+        조건식의 결과가 거짓을 때 실행하고자 하는 명령문;
+    }
+    ```
+
+  * else문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+  ```php
+  $num1 = 20;
+  $num2 = 20;
+  if ($num1 == $num2) {
+      echo "{$num1}과 {$num2}은 같은 수입니다."; // 20과 20은 같은 수입니다.
+  }
+  else {
+      if ($num1 < $num2)
+          echo "{$num1}은 {$num2}보다 작은 수입니다.";
+      else // $num_01 > $num_02
+          echo "{$num1}은 {$num2}보다 큰 수입니다.";
+  }
+  ```
+
+* elseif 문
+
+  * if / else문과 함께 사용됨
+
+  * if문처럼 조건식 설정 가능함
+
+  * 중첩된 if문을 좀 더 간결하게 표현 가능
+
+  * 하나의 조건문 안에서 여러번 사용 가능
+
+  * `elseif`와 `else if` 모두 사용 가능
+
+  * 문법
+
+    ```php
+    if (조건식1) {
+        조건식1의 결과가 참일 때 실행하고자 하는 명령문;
+    }
+    elseif (조건식2) {
+        조건식2의 결과가 참일 때 실행하고자 하는 명령문;
+    }
+    else {
+        조건식1의 결과도 거짓이고, 조건식2의 결과도 거짓일 때 실행하고자 하는 명령문;
+    }
+    ```
+
+  * elseif문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+  ```php
+  $num1 = 30;
+  $num2 = 20;
+  if ($num1 == $num2) {
+      echo "{$num1}과 {$num2}은 같은 수입니다.";
+  }
+  elseif ($num1 < $num2) {
+      echo "{$num1}은 {$num2}보다 작은 수입니다.";
+  }
+  else { // $num_01 > $num_02
+      echo "{$num1}은 {$num2}보다 큰 수입니다."; // 30은 20보다 큰 수입니다.
+  }
+  ```
+
+#### 삼항 연산자에 의한 조건문
+
+* if / else 문을 삼항 연산자를 이용하여 간단히 표현함
+
+#### switch문
+
+* 주어진 조건 값에 따라 프로그램이 다른 명령을 수행하도록 하는 조건문
+
+* if / else 문보다 가독성이 좋음
+
+* 주어진 조건 값과 case 절의 값을 동등 연산자(==)를 사용하여 느슨하게 비교함
+
+* 문법
+
+  ```php
+  switch (조건 값)
+  {
+      case [VALUE1]:
+          조건 값이 [VALUE1]일 때 실행하고자 하는 명령문;
+          break;
+      case [VALUE2]:
+          조건 값이 [VALUE2]일 때 실행하고자 하는 명령문;
+          break;
+      ...
+      default:
+          해당 case가 없을 때 실행하고자 하는 명령문;
+          break;
+  }
+  ```
+
+  * `default`
+    * 조건 값이 switch문에서 나열된 어떠한 case 절에도 해당하지 않을 때 실행됨
+    * 선언하지 않아도 됨
+  * `break`
+    * 조건 값에 해당하는 case / default 절이 실행된 뒤 전체 switch 문을 빠져나가게 해줌
+    * 각 case / default 절이 반드시 포함하고 있어야 함
+
+  ```php
+  $var = "오렌지";
+  switch ($var) {
+      case "귤":
+          echo "여기 있는 과일은 귤입니다.";
+          break;
+      case "사과":
+          echo "여기 있는 과일은 사과입니다.";
+          break;
+      case "바나나":
+          echo "여기 있는 과일은 바나나입니다.";
+          break;
+      default:
+          echo "여기 있는 과일은 처음 보는 과일입니다."; // 여기 있는 과일은 처음 보는 과일입니다.
+          break;
+  }
+  ```
+
+  ```php
+  $var = "바나나";
+  switch ($var) {
+      case "귤":
+      case "사과":
+      case "바나나":
+      case "아보카도":
+          echo "여기 있는 과일은 제가 먹어본 과일입니다."; //여기 있는 과일은 제가 먹어본 과일입니다.
+          break;
+      case "파파야":
+      case "두리안":
+      case "석가":
+          echo "여기 있는 과일은 제가 먹어보지 못한 과일입니다.";
+          break;
+      default:
+          echo "여기 있는 것은 과일이 아닙니다.";
+          break;
+  }
+  ```
+
+  * 여러 개의 case 절을 사용하여 여러 개의 조건을 한 번에 표현 가능
+
+### 반복문
+
+* 프로그램 내에서 같은 명령을 일정 횟수만큼 반복하여 수행하는 명령문
+
+#### while 문
+
+* 특정 조건을 만족할 때까지 주어진 명령문을 반복해서 실행하는 명령문
+
+* 문법
+
+  ```php
+  while (조건식) {
+      조건식의 결과가 참인 동안 반복적으로 실행하고자 하는 명령문;
+  }
+  ```
+
+* loop
+
+  * 조건식을 판단하여 결과가 true이면 내부의 명령문 실행
+  * 명령문 실행완료 후 조건식 판단함
+
+* infinite loop : 조건식의 결과가 true이고 결과를 변경하는 명령문이 존재하지 않는 경우 루프를 영원히 반복함
+
+* 조건식의 결과가 false를 갖도록 변경하는 명령문이 반드시 포함되어야 함
+
+* while문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+#### do / while 문
+
+* 조건식의 결과와 상관없이, 루프를 한 번 실행 후 조건식을 검사함
+
+* 문법
+
+  ```php
+  do {
+      조건식의 결과가 참인 동안 반복적으로 실행하고자 하는 명령문;
+  } while (조건식);
+  ```
+
+  ```php
+  $x = 0;
+  $y = 0;
+  while ($x > 5) {
+      echo "변수 x의 값은 ".(++$x)."입니다.";
+  }
+  do { // do / while문은 조건식과 상관없이 반드시 한 번은 루프를 실행함
+      echo "변수 y의 값은 ".(++$y)."입니다."; // 변수 j의 값은 1입니다.
+  } while ($y > 5);
+  ```
+
+#### for 문
+
+* 초기식, 표현식, 증감식을 모두 포함하고 있는  반복문
+
+* while문보다 간결하게 표현 가능
+
+* 문법
+
+  ```php
+  for (초기식; 조건식; 증감식) {
+      조건식의 결과가 참인 동안 반복적으로 실행하고자 하는 명령문;
+  }
+  ```
+
+* 초기식, 표현식, 증감식은 생략 가능
+
+* 쉼표 연산자(,)를 사용하여 여러 개의 초기식 또는 증감식을 동시에 사용할 수 있음
+
+  ```php
+  for ($i = 0; $i < 5; $i++) {
+      echo "{$i}\n"; // 0 // 1 // 2 // 3 // 4
+  
+  }
+  ```
+
+* for문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+#### foreach 문
+
+* 배열의 모든 요소를 손쉽게 순화할 수 있도록 해줌
+
+* 배열의 길이(length)만큼 반복됨
+
+* 문법
+
+  ```php
+  foreach (배열 as 값을저장할변수) {
+      실행하고자 하는 명령문;
+  }
+  ```
+
+  * 루프마다 배열의 각 요소를 지정된 변수에 대입함
+  * 대입받은 변수를 이용하여 루프 안에서 배열의 각 요소에 순차적으로 접근함
+
+  ```php
+  $arr = array(2, 4, 6, 8);
+  foreach ($arr as $value) {
+      echo "변수 \$value의 현재값은 {$value}입니다.\n";
+      // 변수 $value의 현재값은 2입니다.
+  	// 변수 $value의 현재값은 4입니다.
+  	// 변수 $value의 현재값은 6입니다.
+  	// 변수 $value의 현재값은 8입니다.
+  }
+  unset($value);
+  ```
+
+  * foreach문 내에서 사용한 변수는 foreach문이 끝난 뒤에 `unset()`함수를 사용하여 해제하는 것이 좋음
+
+  ```php
+  // key와 value 모두 사용
+  
+  $arr = array(
+      "둘" => 2,
+      "넷" => 4,
+      "여섯" => 6,
+      "여덟" => 8,
+  );
+  foreach ($arr as $key => $value) {
+      echo "배열 \$arr에서 키값 '{$key}'에 대한 값은 {$value}입니다.\n";
+      	// 배열 $arr에서 키값 '둘'에 대한 값은 2입니다.
+  		// 배열 $arr에서 키값 '넷'에 대한 값은 4입니다.
+  		// 배열 $arr에서 키값 '여섯'에 대한 값은 6입니다.
+  		// 배열 $arr에서 키값 '여덟'에 대한 값은 8입니다.
+  }
+  unset($value);
+  ```
+
+* foreach 문에서 실행될 명령문이 한 줄이면 중괄호({}) 생략 가능
+
+### 기타 제어문
+
+* 루프의 제어
+  * 일반적으로 조건식의 검사를 통해 루프로 진입하면, 다음 조건식을 검사하기 전까지 루프 안에 있는 모든 명령문을 실행함
+
+#### continue 문
+
+* 해당 루프의 나머지 부분을 건너뛰고, 바로 다음 조건식의 판단으로 넘어가게 함
+
+* 반복문 내에서 특정 조건에 대한 처리를 제외하고자 할 때 자주 사용됨
+
+* switch문에서도 사용 가능
+
+  ```php
+  $exceptNum = 4;
+  for ($i=0; $i<=50; $i++) {
+      if ($i % $exceptNum == 0)
+          continue;
+      echo "{$i} ";
+  }
+  // 1 2 3 5 6 7 9 10 11 13 14 15 17 18 19 21 22 23 25 26 27 29 30 31 33 34 35 37 38 39 41 42 43 45 46 47 49 50 
+  ```
+
+#### break 문
+
+* 루프 내에서 사용함
+
+* 루프 내에서 조건식의 판단 결과와 상관없이, 반복문을 완전히 빠져나가고 싶을 때 사용함
+
+  ```php
+  $sum = 0;
+  $startNum = 1;
+  $endNum = 100;
+  $i = $startNum;
+  while (true) { // 일부러 만든 무한 루프임.
+      $sum += $i;
+      if ($i == $endNum)
+          break;
+      $i++;
+  }
+  echo "{$startNum}에서부터 {$endNum}까지 더한 값은 {$sum}입니다."; // 1에서부터 100까지 더한 값은 5050입니다.
+  ```
+
+#### goto 문
+
+* 프로그램의 흐름을 지정한 레이블(label)로 무조건 변경하는 명령문
+* 아무 조건 없이 제어를 옮겨주어, 가장 손쉽게 사용 가능하나 프로그램의 흐름을 매우 복잡하게 만들기도 함 => 거의 사용X
+
+#### 대체 문법
+
+* if문, switch문, while문, for문, foreahc문에서 사용 가능
+
+* 방법
+
+  * 제어문을 여는 괄호 (`{`)를 콜론(`:`)으로 대체함
+  * 닫는 괄호 (`}`)를 각각 `endif;`, `endswitch;`, `endwhile;`, `endfor;`, `endforeach;`로 대체함
+
+  ```php
+  $var = 5;
+  if ($var > 6):
+      echo "변수의 값은 6보다 큽니다.\n";
+  elseif ($var == 6):
+      echo "변수의 값은 6입니다.\n";
+  elseif ($var < 6):
+      echo "변수의 값은 6보다 작습니다.\n"; // 변수의 값은 6보다 작습니다.
+  endif;
+  ```
+
+## 배열(array)
+
+* 맵(map)으로 이루어진 , 순서가 있는 집합
+* map : 한 쌍의 key와 value로 이루어져 있음
+* 배열 요소(array element) : 배열을 구성하는 각각의 맵
+
+### 1차원 배열
+
+* 선언
+
+  ```php
+  $[ARRAYNAME] = array();
+  $[ARRAYNAME][[INDEX]]
+  ```
+
+* 배열 요소의 참조
+
+  * 배열 요소에 접근하기 위해 인덱스(index) 사용함
+  * 인덱스는 0부터 시작함
+  * `[]`연산자를 사용하여 배열의 각 요소를 참조함
+
+* 배열 요소의 추가
+
+  * 코드를 명확하게 하고 오류를 피하기 위해서는 배열을 먼저 선언해주는 것이 좋음
+
+  ```php
+  $arr = array();     // 배열 생성
+  $arr[0] = "apple";  // 배열 요소 추가
+  $arr[1] = "banana";
+  $arr[2] = "orange";
+  ```
+
+  * 배열 생성과 동시에 요소 초기화 가능
+
+    ```php
+    $[ARRAYNAME] = array([ARRAYELEMENT1], [ARRAYELEMENT2], ...);
+    ```
+
+    * 초기화 리스트에 따라 각각의 배열 요소가 순서대로 추가된 배열이 생성됨
+
+    ```php
+    $arr = array("apple", "banana", "orange");  // 배열 생성과 동시에 초기화
+    ```
+
+  * 배열이 존재하지 않는 경우 해당 이름으로 새로운 배열 만든 후에 배열 요소 추가
+
+    ```php
+    $arr[0] = "apple";  // 배열이 존재하지 않으므로, 먼저 배열을 생성한 후에 요소가 추가됨.
+    $arr[1] = "banana";
+    $arr[2] = "orange";
+    var_dump($arr); // [apple, banana, orange]
+    ```
+
+  * 배열 요소의 인덱스 생략 가능함
+
+    * 인덱스가 0부터 시작하여 1씩 증가하며 순서대로 저장됨
+
+    ```php
+    $arr[] = "apple";  // 배열 인덱스를 생략하여, 순서대로 배열에 추가됨.
+    $arr[] = "banana";
+    $arr[] = "orange";
+    ```
+
+* 홀(hole)
+
+  * 인덱스에 대응하는 배열 요소가 없는 부분
+    * 특정인덱스(지정한인덱스)에만 배열 요소를 추가할 수 있음
+    * 배열요소를 추가한 인덱스를 제외한 나머지 인덱스에는 배열 요소 존재하지 않음
+  * 배열의 홀(hole)을 참조하게 되면, 초기화되지 않은 변수를 참조할 때처럼 NULL을 반환함
+
+  ```php
+  $arr = array();            // 배열의 생성
+  $arr[10] = "banana";       // 인덱스 10에만 배열 요소를 추가함.
+  
+  var_dump($arr);
+  var_dump($arr[0]);         // NULL
+  var_dump(isset($arr[0]));  // bool(false)
+  var_dump(isset($arr[10])); // bool(true)
+  ```
+
+* 루프를 이용한 배열로의 접근
+
+  * for문을 사용하면 배열의 인덱스를 이용하여 쉽고 간단하게 배열 요소 접근 가능
+
+    ```php
+    $arr = array("apple", "banana", "orange");
+    for($i = 0; $i < count($arr); $i++){
+        echo $arr[$i]."\n";
+        // apple
+        // banana
+        // orange
+    }
+    ```
+
+    * hole을 가지는 배열에서는 for문을 사용하여 접근불가
+
+  * foreach 문을 사용하여 간편하게 배열 요소에 접근 가능
+
+    * hole이 있는 배열에서 hole이 아닌 배열 요소에만 정확히 접근함
+
+    ```php
+    $arr = array(); // 배열의 생성
+    $arr[2] = "apple";
+    $arr[3] = "banana";
+    $arr[4] = "orange";
+    // $arr[0]과 $arr[1]은 배열의 홀(hole)이 됨.
+    
+    for ($i = 0; $i < count($arr); $i++) {
+        echo "\$arr[{$i}] : ".$arr[$i]."\n";
+        // $arr[0] : 
+        // $arr[1] : 
+        // $arr[2] : apple
+    }
+    
+    foreach ($arr as $element){
+        echo $element."\n";
+        // apple
+        // banana
+        // orange
+    }
+    ```
+
+### 다차원 배열(multidimensional array)
+
+* 2차원 이상의 배열
+* 배열 요소로 또 다른 배열 사용함
+
+#### 2차원 배열
+
+* 배열 요소로 또 다른 1차원 배열을 사용하는 배열
+
+* 행과 열을 가진 행렬과 같은 모양으로 구성됨
+
+* 선언
+
+  ```php
+  $[ARRAYNAME] = array(
+  	array(),
+      array(),
+      ...
+  );
+  ```
+
+  * 행의 수 : 1차원 배열의 개수
+  * 열의 수 : 각 1차원 배열의 배열 요소 개수
+
+* 배열 요소 입력
+
+  * 배열 요소에 접근하기 위해 인덱스 사용함
+  * `[]` 연산자를 두 번 사용하여 2차원 배열에 속한 요소에 접근함
+
+  ```php
+  $arr = array( // 1차원 배열을 3개 갖는 2차원 배열 선언
+      array(),
+      array(),
+      array()
+  );
+  
+  $arr[0][0] = "apple"; // 배열 요소 입력
+  $arr[0][1] = "korea";
+  $arr[0][2] = 1000;
+  
+  $arr[1][0] = "banana";
+  $arr[1][1] = "philippines";
+  $arr[1][2] = 2000;
+  
+  $arr[2][0] = "orange";
+  $arr[2][1] = "us";
+  $arr[2][2] = 1500;
+  
+  echo $arr[0][0].", ".$arr[0][1].", ".$arr[0][2]."\n"; // apple, korea, 1000
+  echo $arr[1][0].", ".$arr[1][1].", ".$arr[1][2]."\n"; // banana, philippines, 2000
+  echo $arr[2][0].", ".$arr[2][1].", ".$arr[2][2]; // orange, us, 1500
+  ```
+
+  * 배열 생성과 동시에 초기화 가능
+
+    ```php
+    $[ARRAYNAME] = array(
+    	array([ARRAYARGUMENT00], [ARRAYARGUMENT01], ...),
+        array([ARRAYARGUMENT10], [ARRAYARGUMENT01], ...),
+        ...
+    );
+    ```
+
+    ```php
+    $arr = array( // 1차원 배열을 3개 갖는 2차원 배열 선언과 동시에 초기화
+        array("apple", "korea", 1000),
+        array("banana", "philippines", 2000),
+        array("orange", "us", 1500)
+    );
+    var_dump($arr);
+    ```
+
+* 루프를 이용한 2차원 배열로의 접근
+
+  * for 문에 배열의 인덱스를 이요하여 배열 요소에 접근 가능
+  * 행과 열에 대해 for문을 2번 사용
+
+  ```php
+  $arr = array( // 1차원 배열을 3개 갖는 2차원 배열 선언과 동시에 초기화
+      array("apple", "korea", 1000),
+      array("banana", "philippines", 2000),
+      array("orange", "us", 1500)
+  );
+  for($row = 0; $row < 3; $row++) {
+      for($column = 0; $column < count($arr[$row]); $column++){
+          echo $arr[$row][$column].", "; // apple, // korea, // 1000, // banana, // philippines, // 2000, // orange, // us, // 1500, 
+      }
+  }
+  ```
+
+#### 3차원 배열
+
+* 배열 요소로 2차원 배열을 사용하는 배열
+
+* 선언
+
+  ```php
+  $[ARRAYNAME] = array(
+  	array(
+          array(),
+          array(),
+          ...
+      ),
+      array(
+          array(),
+          array(),
+          ...
+      ),
+      ...
+  );
+  ```
+
+* 생성과 동시에 초기화 가능
+
+  ```php
+  $[ARRAYNAME] = array(
+  	array(
+          array([ARRAYARGUMENT000], [ARRAYARGUMENT001], ...),
+          array([ARRAYARGUMENT010], [ARRAYARGUMENT011], ...),
+          ...
+      ),
+      array(
+          array([ARRAYARGUMENT100], [ARRAYARGUMENT101], ...),
+          array([ARRAYARGUMENT110], [ARRAYARGUMENT111], ...),
+          ...
+      ),
+      ...
+  );
+  ```
+
+  ```php
+  $arr = array( // 2차원 배열을 2개 갖는 3차원 배열 선언과 동시에 초기화
+      array(
+          array("apple", "korea", 1000),
+          array("banana", "philippines", 2000),
+          array("orange", "us", 1500)
+      ),
+      array(
+          array("carrot", "vietnam", 500),
+          array("cucumber", "korea", 1000),
+          array("pumpkin", "china", 2000)
+      )
+  );
+  var_dump($arr);
+  ```
+
+### 연관 배열
+
+* 연관 배열(associative array)
+
+  * 배열의 인덱스를 다양한 타입으로 설정한 배열
+
+  * 정수와 문자열 이외에 다른 타입의 값을 key로 사용하면, 내부적으로 정수와 문자열로 타입 변환이 이루어짐
+
+  * 선언
+
+    ```php
+    $[ARRAYNAME] = array();
+    ```
+
+* 연관 배열의 참조
+
+  * 배열 이름과 key를 사용하여 각 요소를 참조함
+
+    ```php
+    $[ARRAYNAME]["[KEY]"] = [VALUE];
+    ```
+
+  ```php
+  $arr = array();        // 배열 생성
+  $arr["apple"] = 1000;  // 연관 배열 요소 추가
+  $arr["banana"] = 2000;
+  $arr["orange"] = 1500;
+  var_dump($arr);
+  ```
+
+  * 생성과 동시에 초기화 가능
+
+    * key와 value 사이에 `=>`를 넣어주어 배열 요소에 저장될 key와 value 지정 가능
+
+    ```php
+    $[ARRAYNAME] = array("[KEY1]" => "[VALUE1]", "[KEY2]" => "[VALUE2]", ...);
+    ```
+
+    ```php
+    // 연관 배열 생성과 동시에 초기화
+    $arr = array("apple" => 1000, "banana" => 2000, "orange" => 1500);
+    echo $arr["apple"].", ".$arr["banana"].", ".$arr["orange"]; // 1000, 2000, 1500
+    ```
+
+  * 생성된 연관 배열에 새로운 요소 추가 가능
+
+    ```php
+    $arr = array("apple" => 1000); // 연관 배열 생성과 동시에 초기화
+    $arr["banana"] = 2000;         // 생성된 연관 배열에 요소 추가
+    $arr["orange"] = 1500;
+    var_dump($arr);
+    ```
+
+* 루프를 이용한 연관 배열로의 접근
+
+  * foreach 문을 사용하여 접근함
+
+    * 연관 배열 요소의 key와 value를 변수에 따로 저장하여 루프 내에서 사용 가능
+
+    ```php
+    $arr = array("apple" => 1000, "banana" => 2000, "orange" => 1500);
+    
+    foreach ($arr as $key => $value) {
+        echo $key." ".$value."\n";
+        // apple 1000
+        // banana 2000
+        // orange 1500
+    }
+    ```
+
+  * `each()`함수를 사용하여 접근함
+
+    * 배열 커서(array cursor)가 현재 가리키고 있는 배열 요소를 반환하고, 다음 배열 요소를 가리키도록 함
+    * 가리키는 요소의 다음 요소가 배열의 마지막 요소이면, 더 이상 동작하지 않음
+
+    ```php
+    $arr = array("apple" => 1000, "banana" => 2000, "orange" => 1500);
+    
+    while($element = each($arr)) {
+        echo $element['key']." ".$element['value']."\n";
+        // apple 1000
+        // banana 2000
+        // orange 1500
+    }
+    ```
+
+
+## 함수(function)
+
+* 전역 범위(global scope)를 가짐
+  * 같은 스크립트 내에서는 정의된 위치와 상관없이 호출 가능
+* 오버로딩을 지원하지 않음
+  * 이미 선언된 함수를 다시 선언할 수 없음
+
+### 정의
+
+```php
+function [FUNCTIONNAME]([PARAMETER1], [PARAMETER2], ...)
+{
+    함수가 호출되었을 때 실행될 코드;
+}
+```
+
+* `function`로 함수의 정의 시작
+* 함수의 이름, 매개변수, 블록({}) 사이에 들어갈 코드 명시
+
+### 장점
+
+* 반복적인 코드작성을 줄일 수 있음
+* 모듈화로 인하여 코드의 가독성이 좋아짐
+* 유지보수가 용이함
+
+### 구조
+
+```php
+function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
+{
+    함수가 호출 되었을 때 실행될 코드;
+}
+
+// 함수 호출
+[FUNCTIONNAME]([ARGUMENT1], [ARGUMENT2], ...)
+```
+
+* `[FUNCTIONNAME]` : 함수를 구분하는 식별자(identifier)
+* `[PARAMETER]` : 함수를 호출할 때 인수로 전달된 값을 함수 내부에서 사용할 수 있도록 해주는 변수
+  * 인수로 전달받은 값을 함수에서 사용
+  * 여러 개를 가질 수 있으며, 쉼표(,)를 사용하여 구분
+* `[ARGUMENT]` : 함수가 호출될 때 함수로 값을 전달해주는 변수
+* `{}` : 함수가 호출되면 중괄호 안의 코드가 실행됨
+
+### 함수 이름
+
+* 문자와 숫자, 언더스코어(_)만 사용 가능
+* 숫자로 시작 불가
+* 독립적인 이름 가짐(중복 불가)
+* 대소문자 구별하지 않음(but, 구별하는 것을 선호함)
+
+### 사용자 정의 함수(user defined function)
+
+* 사용자가 직접 만든 함수
+* 해당 함수가 정의된 PHP 스크립트에서만 호출 가능
+
+### 호출
+
+* 내장함수 : 모든 PHP 스크립트에서 호출가능
+
+* 사용자 정의 함수 : 해당 PHP 스크립트에서만 호출 가능
+
+* 방법
+
+  * 함수의 정의와 같은 형태
+
+  ```php
+  $[VARIABLE] = [FUNCTIONNAME]([ARGUMENT1], [ARGUMENT2], ...);
+  ```
+
+  * 함수 `[FUNCTIONNAME]`을 호출하면서 인수로 `[ARGUMENT]`를 전달함
+
+  * 인수로 전달된 값들은 함수에서 정의된 `[PARAMETER]`에 대입 됨
+
+    `[ARGUMENT1]` => `[PARAMETER1]`, `[ARGUMENT2]` => `[PARAMETER2]`
+  
+* 함수 호출 시 전달된 인수는 매개변수의 왼쪽부터 차례대로 대입됨
+
+### 값 반환
+
+* return문
+
+  * 포함할 수도 있고, 포함하지 않을 수도 있음
+  * `return` 키워드를 사용하여 명시 가능
+  * 호출자에게 함수 블록 내에서 실행된 코드의 결과를 반환함
+  * 모든 타입의 값 반환 가능
+
+* return 값 type (PHP 7)
+
+  * 함수의 return 값을 원하는 type으로 반환받을 수 있도록 지정
+
+  * type 지정할 때 강도 설정 가능
+
+    * 기본값이 약한 강도인 경우 : type이 일치하지 않으면, 자동 타입 변환을 통해 명시된 타입으로 변환된 반환값을 반환함
+
+      ```php
+      function sum($x, $y): float // 반환값의 타입을 float 타입으로 설정함
+      {
+          return $x + $y;
+      }
+      
+      var_dump(sum(3, 4)); // 결과의 type은 int 이지만 설정한 반환값 타입인 float로 변환됨 // float(7)
+      ```
+
+    * 기본값이 강한 강도인 경우 : 반환값의 타입이 일치하지 않으면, 오류 발생함
+
+      * 변환 가능한 경우 오류 발생하지 않음..
+
+        "1", 정수와 실수 변환 등등
+
+      ```php
+      declare(strict_types = 1); // declare문을 사용하여 strice 모드로 설정함
+      
+      function sum($x, $y): bool // 반환값의 타입을 float 타입으로 설정함
+      {
+          echo ($x + $y); // $x의 type이 int, value가 0으로 바뀜 // 4
+          echo "\n"; // 
+          return $x + $y; // 오류 발생
+      }
+      
+      var_dump(sum("a", 4));
+      ```
+
+### 매개변수(parameter)와 인수(argument)
+
+* parameter
+
+  * 함수를 호출할 때 인수로 전달된 값을 함수 내부에서 사용할 수 있게 해주는 변수
+  * 대부분의 함수는 하나 이상의 매개변수를 가지지만, 매개변수가 없는 함수도 존재함
+
+* argument
+
+  * 함수가 호출될 때 함수로 값을 전달해주는 변수
+
+* parameter의 전달방식
+
+  * 값 전달(passing by value)
+
+    * 함수의 인수가 매개변수로 전달되는 기본방식
+    * 인수를 함수에 전달하면, 새롭게 생성된 매개변수에 전달받은 값이 복사되어 저장됨
+    * 매개변수에 저장된 값은 전달받은 데이터의 복사본이므로 함수 안에서 변경되어도 함수 밖의 원본 데이터에는 영향을 주지 않음
+
+    ```php
+    function increment($para)
+    {
+        $para++; // $value의 값을 복사하여 increment() 함수에 인수로 전달함.
+        echo "\$para : ".$para."\n"; // $para : 2
+    }
+    $value = 1;
+    increment($value);
+    echo "\$value : ".$value; // $value : 1
+    ```
+
+  * 참조 전달(passing by value)
+
+    * 전달받은 원본 데이터에 대한 참조 변수를 매개변수에 전달함
+    * 함수 내부에서 값을 변경하면, 함수 밖의 원본 데이터도 같이 바뀜
+    * 함수를 선언할 때 매개변수 앞에 '`&`'기호를 붙여 참조 전달을 사용함
+
+    ```php
+    function increment(&$para) // 인수로 전달되는 값의 원본을 참조함.
+    {
+        $para++;
+        echo "\$para : ".$para."\n"; // $para : 2
+    }
+    $value = 1;
+    increment($value);
+    echo "\$value : ".$value; // $value : 2
+    ```
+
+* default parameter
+
+  * 함수를 호출할 때 명시된 매개변수를 전달하지 않았을 경우에 사용하는 기본값
+
+  * default parameter를 설정한 매개변수는 함수 호출시 인수가 전달되지 않았을 경우 기본값을 사용하며, 오류가 발생하지 않음
+
+  * 설정방법
+
+    ```php
+    function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2] = 0, $[PARAMETER3] = 0)
+    ```
+
+    * [PARAMETER1]은 인수가 전달되지 않으면 함수 호출시 오류 발생함
+
+  * 함수 호출시 전달된 인수는 매개변수의 왼쪽부터 차례대로 대입되므로 default parameter 설정은 매개변수 리스트의 맨 오른쪽 끝 매개변수부터 시작하는 것이 좋음
+
+  ```php
+  function sum($value1 = 0, $value2, $value3 = 0)
+  {
+      return $value1 + $value2 + $value3;
+  }
+  
+  echo sum(1, 2, 3); // 6
+  echo sum(1, 2);    // 3
+  echo sum(1);     // 오류가 발생함.
+  echo sum();      // 오류가 발생함.
+  ```
+
+* 가변 길이 인수 목록(variable-length argument list)
+
+  * 함수를 선언할 때 전달받을 인수의 개수를 미리 정하지 않고, 호출할 때마다 유동적으로 인수를 넘기는 기능
+  * '`...`'토큰을 사용하여 함수가 호출될 때 전달받은 인수들을 배열 형태로 저장함
+
+  ```php
+  function sum(...$num) // PHP 5.6 이상
+  {
+      $sum = 0;
+      foreach($num as $n) {
+          $sum += $n;
+      }
+      return $sum;
+  }
+  $res = sum();
+  echo $res."\n"; // 0
+  $res = sum(1);
+  echo $res."\n"; // 1
+  $res = sum(1, 2);
+  echo $res."\n"; // 3
+  ```
+
+### 함수의 활용
+
+* conditional function
+
+  * 특정 조건을 만족할 때만 선언되는 함수
+
+  ```php
+  $makefunc = true;
+  //func(); // 이 부분은 func() 함수가 선언되기 전이므로, 함수를 호출할 수 없습니다.
+  
+  if($makefunc) {
+      function func()
+      {
+          echo "이제 함수를 사용할 수 있습니다";
+      }
+  
+      func(); // 이 부분은 func() 함수가 선언되었으므로, 함수를 호출할 수 있습니다. // 이제 함수를 사용할 수 있습니다
+  }
+  ```
+
+* 함수안의 함수(function within function)
+
+  * 함수 안에 또 다른 함수 선언 가능
+
+  ```php
+  function out()
+  {
+      function in()
+      {
+          echo "이제 함수를 사용할 수 있습니다";
+      }
+  }
+  
+  in(); // 이 부분은 in() 함수가 선언되기 전이므로, 함수를 호출할 수 없습니다. // error
+  out(); // in() 함수 선언
+  
+  in();   // 이 부분은 in() 함수가 선언되었으므로, 함수를 호출할 수 있습니다. // 이제 함수를 사용할 수 있습니다
+  ```
+
+* 재귀 함수(recursive function)
+
+  * 함수 내부에서 함수가 자기 자신을 호출하는 함수
+  * 무한 반복되므로, 함수 내에 재귀 호출을 중단하도록 조건이 변경될 명령문을 반드시 포함해야 함
+  * 100번 이상의 재귀 호출은 스택의 한계에 도달하여 스크립트가 중단될 수 있음
+
+  ```php
+  function factorial($num)
+  {
+      if($num > 1)                           // 1이 될 때까지
+          return $num * factorial($num - 1); // 1씩 감소시킨 값을 전달하여 자기 자신을 계속 호출함.
+      else
+          return 1;
+  }
+  echo factorial(4); // 24
+  ```
+
+* 가변 함수(variable function)
+
+  * 변수를 사용하여 함수를 호출하는 것
+  * 변수 이름에 괄호(`()`)를 붙이면, 해당 변수의 값과 같은 이름을 가지는 함수를 호출함
+  * 변수에 함수의 이름을 별도로 지정 가능
+
+  ```php
+  function first()
+  {
+      echo "first() 함수입니다.\n\n";
+  }
+  function second($para)
+  {
+      echo "second() 함수입니다.\n";
+      echo "함수 호출 시 전달받은 인수의 값은 {$para}입니다.";
+  }
+  $func = "first";
+  $func();    // first() 함수를 호출함.
+  $func = "second";
+  $func(20);  // second() 함수를 호출함.
+  ```
+
+### 내장 함수
+
+#### 변수 관련 함수
+
+* 변수의 타입 변경
+
+  * `gettype()`
+    * 변수를 전달하면 타입에 따라 해당 타입의 이름을 `문자열`로 반환함
+    * `float`형의 경우에는 `double`반환함
+    * 표준 타입이 아닌 경우 `unknown type`반환함
+    * 내부적으로 문자열을 비교하므로 실행 속도가 느림
+  * `settype()`
+    * 전달받은 변수의 타입 변경함
+    * 변환할 타입 : `bool`, `int`, `string`, `array`, `object`, `float`, `null`
+    * 전달받은 변수의 타입을 성공적으로 변경하면 true 반환
+
+  ```php
+  $x = 5;
+  echo gettype($x)."\n"; // integer
+  
+  
+  settype($x, "string");
+  echo gettype($x);      // string
+  ```
+
+* 변수의 타입 검사
+
+  |                   함수                   | 설명                                                     |
+  | :--------------------------------------: | -------------------------------------------------------- |
+  |                is_array()                | 전달받은 변수의 타입이 배열인지를 확인함                 |
+  |                is_bool()                 | 전달받은 변수의 타입이 논리형인지를 확인함               |
+  |              is_callable()               | 변수의 내용을 함수처럼 호출할 수 있는지를 확인함         |
+  | is_float(),<br>is_double(),<br>is_real() | 전달받은 변수의 타입이 실수인지를 확인함                 |
+  | is_int(),<br>is_integer(),<br>is_long()  | 전달받은 변수의 타입이 정수인지를 확인함                 |
+  |                is_null()                 | 잔달받은 변수의 타입이 NULL인지를 확인함                 |
+  |               is_numeric()               | 전달받은 변수가 수나 숫자로 이루어진 문자열인지를 확인함 |
+  |               is_object()                | 전달받은 변수의 타입이 객체인지를 확인함                 |
+  |              is_resource()               | 전달받은 변수의 타입이 자원인지를 확인함                 |
+  |               is_scalar()                | 전달받은 변수가 스칼라값인지를 확인함                    |
+  |               is_string()                | 전달받은 변수의 타입이 문자열인지를 확인함               |
+
+  * 스칼라 값 : `integer`, `float`, `string`, `boolean`
+
+* 변수의 상태 변경
+
+  * `isset()`
+
+    * 전달받은 변수가 초기화 되어 있는지 확인함
+    * 선언된 변수가 존재하면 true 반환함
+
+  * `unset()`
+
+    * 전달받은 변수를 제거함
+
+  * `empty()`
+
+    * 전달받은 변수가 비어있는지를 검사함
+
+    * 전달받은 변수가 존재하고, 해당 변수가 비어있지 않으면 false 반환함
+
+    * 변수가 비어있다고 인식하는 경우
+
+      * int : 0, float : 0.0, 문자열 "0", 빈 문자열 "", null, false, 빈 배열 array(), 초기화되지 않은 변수
+
+    * 내부적으로 동작하는 방식
+
+      ```php
+      !isset($var) | $var==false
+      ```
+
+  ```php
+  $var;
+  var_dump(isset($var)); // bool(false)
+  var_dump(empty($var)); // bool(true)
+  
+  $var = 5;
+  var_dump(isset($var)); // bool(true)
+  var_dump(empty($var)); // bool(false)
+  
+  $var = 0;
+  var_dump(isset($var)); // bool(true)
+  var_dump(empty($var)); // bool(true)
+  
+  unset($var);
+  var_dump(isset($var)); // bool(false)
+  var_dump(empty($var)); // bool(true)
+  ```
+
+* 특정 타입으로 변경
+
+  * `intval()`
+    * 전달받은 변수에 해당하는 정수를 반환
+  * `floatval()`, `doubleval()`
+    * 전달받은 변수에 해당하는 실수를 반환
+  * `strval()`
+    * 전달받은 변수에 해당하는 문자열 반환
+
+  ```php
+  $x = "123.56789abc";
+  echo intval($x)."\n";   // 123
+  echo floatval($x)."\n"; // 123.56789
+  echo strval($x);   // 123.56789abc
+  ```
+
+#### 배열 관련 함수
+
+* 배열의 생성
+
+  * `array()`
+
+    * 배열을 생성하는 함수
+
+    ```php
+    $arr = array(1, 2, 3, 4, 5);
+    ```
+
+* 배열 요소의 개수
+
+  * `count()` 
+    * 배열에 저장된 모든 배열 요소의 개수를 반환함
+    * 배열에 hole이 있는 경우 hole이 아닌 배열 요소의 개수를 반환함 => 정확한 배열의 길이 구할 수 없음
+  * `sizeof()`
+    * 배열에 저장된 모든 배열 요소의 개수를 반환함
+  * `array_count_values()`
+    * 전달받은 배열의 배열 요소 값을 모두 확인하여, 해당 값이 몇 번 등장하는지 확인함
+    * 배열 요소의 값을 key로, 해당 값의 등장 빈도를 value로 하는 연관 배열을 반환함
+
+  ```php
+  $arr = array(1, 5, 7, 3, 3, 1, 2);
+  
+  echo "배열 요소의 수는 ".count($arr)."입니다.";  // 배열 요소의 수는 7입니다.
+  echo "배열 요소의 수는 ".sizeof($arr)."입니다."; // 배열 요소의 수는 7입니다.
+  
+  $acv = array_count_values($arr);                 // 1 : 2번, 5 : 1번, 7 : 1번, 3 : 2번, 2 : 1번
+  var_dump($acv);
+  ```
+
+* 배열의 탐색
+
+  * 배열 포인터
+    * 현재 선택된 배열 요소가 어느 요소인지를 가리킴
+    * 배열이 생성되면 자동으로 배열의 첫 번째 요소를 가리킴
+  * `current()`, `pos()`
+    * 배열 포인터가 현재 가리키고 있는 요소를 반환함
+  * `next()`
+    * 배열 포인터를 앞으로 하나 이동시킨 후에, 해당 요소를 반환함
+  * `prev()`
+    * 배열 포인터를 뒤로 하나 이동시킨 후에, 해당 요소를 반환함
+  * `each()`
+    * 배열 포인터가 현재 가리키고 있는 요소의 key와 value을 연관 배열로 반환하고, 배열 포인터를 앞으로 하나 이동시킴
+  * `reset()`
+    * 배열 포인터가 첫 번째 배열 요소를 가리키도록 한 뒤에, 해당 요소의 값을 반환함
+  * `end()`
+    * 배열 포인터가 마지막 배열 요소를 가리키도록 한 뒤에, 해당 요소의 값을 반환함
+
+  ```php
+  $arr = array(2, 3, 7, 4, 6);
+  
+  $element = current($arr);  // 배열의 첫 번째 요소를 가리킴.
+  while($element) {          // 배열의 마지막 요소까지
+      echo $element."\n";         // 해당 요소의 값을 출력하고,
+      $element = next($arr); // 다음 요소를 가리킨 후에 해당 요소를 반환함.
+  }                          // 2, 3, 7, 4, 6
+  
+  $element = end($arr);      // 배열의 마지막 요소를 가리킴.
+  while($element) {          // 배열의 첫 번째 요소까지
+      echo $element."\n";         // 해당 요소의 값을 출력하고,
+      $element = prev($arr); // 이전 요소를 가리킨 후에 해당 요소를 반환함.
+  }                          // 6, 4, 7, 3, 2
+  ```
+
+* 배열의 정렬
+
+  * `sort()`
+
+    * 배열 요소들을 정렬 기준에 맞게 정렬함
+    * 두번 째 인수로 배열 요소를 정렬할 기준 전달 가능
+      * `SORT_NUMERIC` : 배열 요소를 숫자로 비교
+      * `SORT_STRING` : 배열 요소를 문자열로 비교
+    * 정렬 기준 전달하지 않을 경우, 배열 요소들의 타입을 변경하지 않고 그대로 비교함
+    * 대소문자 구별하며, 대문자가 소문자보다 앞쪽에 정렬됨
+    * 배열 요소의 정렬에 성공하면 true 반환함
+
+    ```php
+    $arr = array(3, 2, 7, 6, 4);
+    sort($arr); // 배열 정렬 -> 2, 3, 4, 6, 7
+    var_dump($arr);
+    ```
+
+    ```php
+    $arr = array(15, 2, 1, 21, 121);
+    
+    sort($arr, SORT_NUMERIC); // 배열 요소를 숫자로 비교함.   -> 1, 2, 15, 21, 121
+    var_dump($arr);
+    sort($arr, SORT_STRING);  // 배열 요소를 문자열로 비교함. -> 1, 121, 15, 2, 21
+    var_dump($arr);
+    ```
+
+  * `array_multisort()`
+
+    * 여러 배열이나 다차원 배열의 배열 요소를 정렬함
+
+  * `natcasesort()`
+
+    * 대소문자를 구분하지 않는 영문숫자 순(natural order)의 알고리즘으로 배열 요소를 정렬함
+
+  * `natsort()`
+
+    * 영문숫자 순(natural order)의 알고리즘으로 배열 요소를 정렬함
+
+  * `usort()`
+
+    * 사용자가 정의한 비교 함수를 사용하여, 배열 요소의 value을 기준으로 정렬함
+
+  * `uksort()`
+
+    * 사용자가 정의한 비교 함수를 사용하여, 배열 요소의 keyㄹ 기준으로 정렬함
+
+  * `uasort()`
+
+    * 사용자가 정의한 비교 함수를 사용하여, 인덱스 연관성을 유지한 채 배열 요소를 정렬함
+
+* 연관 배열의 정렬
+
+  * 연관 배열은 문자열을 인덱스로 사용하므로, key와 value로 따로 정렬 가능함
+  * `ksort()`
+    * 각 요소의 key를 기준으로 정렬함
+  * `asort()`
+    * 각 요소의 value을 기준으로 정렬함
+
+  ```php
+  $arr = array("apple" => 1000, "banana" => 2000, "orange" => 1500);
+  
+  asort($arr); // 요소의 값을 기준으로 배열 정렬 -> apple, orange, banana
+  var_dump($arr);
+  ksort($arr); // 키값을 기준으로 배열 정렬      -> apple, banana, orange
+  var_dump($arr);
+  ```
+
+* 배열 요소의 재배치
+
+  * `shuffle()`
+
+    * 배열 요소를 섞은 뒤에 무작위로 재배치함
+
+    ```php
+    $arr = array(1, 2, 3, 4, 5);
+    shuffle($arr);              // 배열 요소를 무작위로 재배치함.
+    var_dump($arr);
+    ```
+
+  * `array_reverse()`
+
+    * 전달받은 배열의 순서를 역순으로 변경한 새로운 배열을 반환함
+    * 원본 배열에 영향 주지 않음
+
+    ```php
+    $arr1 = array(1, 2, 3, 4, 5);
+    $arr2 = array_reverse($arr1);       // 배열 요소를 역순으로 바꾼 새로운 배열을 반환함.
+    
+    for($i = 0; $i < count($arr2); $i++){ // 새로 생성된 배열인 $arr_02의 모든 요소를 출력함.
+        echo $arr2[$i].", ";              // 5, 4, 3, 2, 1
+    }
+    
+    for($i = 0; $i < count($arr1); $i++){ // 원본 배열인 $arr_01의 모든 요소를 출력함.
+        echo $arr1[$i].", ";              // 1, 2, 3, 4, 5
+    }
+    ```
+
+#### 문자열 관련 함수
+
+* 문자열의 길이
+
+  * `strlen()`
+    * 전달받은 문자열의 길이(문자열에 포함된 문자의 개수)를 반환함
+    * 함수에 전달된 문자열에 한글이 포함되면 문자열의 총 바이트(byte) 수를 반환함
+  * `mb_strlen()`
+    * 한글이 포함된 문자열의 정확한 문자열 길이를 반환함
+    * 두 번째 인수로 인코딩 방식 전달받을 수 있음
+      * 전달받은 인코딩 방식으로 해당 문자열 해석하여 문자열 길이 반환함
+    * 두 번재 인수를 전달받지 못하는 경우, 현재 시스템의 내부 인코딩 방식을 사용함
+
+  ```php
+  $str = "12345678";
+  echo strlen($str)."\n"; // 8
+  
+  $str = "한글로된문자열";
+  echo strlen($str)."\n";             // 7 * 3 = 21 // 21
+  echo mb_strlen($str)."\n";          // 7 * 3 = 21
+  echo mb_strlen($str, "UTF-8"); // 7
+  ```
+
+* 문자열 비교하기
+
+  * `strcmp()`
+    * 전달받은 두 개의 문자열을 서로 비교함
+    * 첫 번째 인수의 문자열이 두 번째 인수의 문자열보다 크면 양수를, 작으면 음수를, 완전히 같으면 0을 반환함
+    * 대소문자 구분함
+  * `strnatcmp()`
+    * 전달받은 두 개의 문자열을 서로 비교함
+    * 첫 번째 인수의 문자열이 두 번째 인수의 문자열보다 크면 양수를, 작으면 음수를, 완전히 같으면 0을 반환함
+    * 대소문자 구분함
+    * 영숫자 순(natural ordering)으로 문자열 비교
+  * `strcasecmp()`
+    * 전달받은 두 개의 문자열을 서로 비교함
+    * 첫 번째 인수의 문자열이 두 번째 인수의 문자열보다 크면 양수를, 작으면 음수를, 완전히 같으면 0을 반환함
+    * 대소문자 구분하지 않음
+  * `strnatcasecmp()`
+    * 전달받은 두 개의 문자열을 서로 비교함
+    * 첫 번째 인수의 문자열이 두 번째 인수의 문자열보다 크면 양수를, 작으면 음수를, 완전히 같으면 0을 반환함
+    * 대소문자 구분하지 않음
+    * 영숫자 순(natural ordering)으로 문자열 비교
+
+  ```php
+  echo strcmp("abc", "ABC")."\n";         // 1
+  echo strnatcmp("abc", "ABC")."\n";      // 1
+  echo strcasecmp("abc", "ABC")."\n";     // 0
+  echo strnatcasecmp("abc", "ABC")."\n";  // 0
+  echo strcmp("2", "10")."\n";            // 1
+  echo strnatcmp("2", "10")."\n";         // -1 // 영숫자순으로 비교
+  echo strcasecmp("2", "10")."\n";        // 1
+  echo strnatcasecmp("2", "10");          // -1 // 영숫자순으로 비교
+  ```
+
+* 특정 문자열 검색
+
+  * `strstr()`, `strchr()`
+    * 해당 문자열에서 전달받은 문자열과 처음으로 일치하는 부분을 찾음
+    * 대소문자를 구별함
+    * 해당 문자열에 일치하는 부분이 존재하면, 처음으로 일치하는 부분을 포함한 이후의 모든 문자를 같이 반환함
+    * 일치하는 부분이 존재하지 않으면 false 반환함
+  * `stristr()`
+    * 해당 문자열에서 전달받은 문자열과 처음으로 일치하는 부분을 찾음
+    * 대소문자를 구별하지 않음
+    * 해당 문자열에 일치하는 부분이 존재하면, 처음으로 일치하는 부분을 포함한 이후의 모든 문자를 같이 반환함
+    * 일치하는 부분이 존재하지 않으면 false 반환함
+  * `strrchr()`
+    * 해당 문자열에서 전달받은 문자열과 마지막으로 일치하는 부분을 찾음
+    * 대소문자를 구별함
+    * 해당 문자열에 일치하는 부분이 존재하면, 마지막으로 일치하는 부분을 포함한 이후의 모든 문자를 같이 반환함
+    * 일치하는 부분이 존재하지 않으면 false 반환함
+
+  ```php
+  echo strstr("ABCabcDEFabc", "abc")."\n";   // abcDEFabc
+  echo strrchr("ABCabcDEFabc", "abc")."\n"; // abc
+  echo stristr("ABCabcDEFabc", "abc");  // ABCabcDEFabc
+  ```
+
+* 특정 문자열 위치 찾기
+
+  * `strpos()`
+    * 해당 문자열에서 전달받은 문자열과 처음으로 일치하는 부분의 시작 인덱스 반환함
+  * `strrpos()`
+    * 해당 문자열에서 전달받은 문자열과 마지막으로 일치하는 부분의 시작 인덱스를 반환함
+
+  ```php
+  echo strpos("ABCabcDEFabc", "abc")."\n";  // 3
+  echo strrpos("ABCabcDEFabc", "abc"); // 9
+  ```
+
+* 문자열 추출하기
+
+  * `substr()`
+    * 해당 문자열에서 특정 인덱스(두 번째 인수)부터 전달받은 길이(세 번째 인수)만큼의 일부분을 추출하여 반환함
+    * 두 번째 인수 
+      * 전달받은 인덱스가 양수인 경우 해당 인덱스부터 해당 문자열의 끝까지를 반환함
+      * 전달받은 인덱스가 음수인 경우 해당 문자열 끝부터 전달받은 음수의 절댓값만큼의 문자열을 반환함
+    * 세 번째 인수
+      * 전달받은 길이가 양수인 경우 반환할 문자열의 길이를 나타냄
+      * 전달받은 길이가 음수인 경우 특정 인덱스부터 문자열  끝부터 전달받은 음수의 절댓값까지의 문자열을 반환함
+
+* 문자열 대소문자 바꾸기
+
+  * `strtolower()`
+    * 전달받은 문자열의 모든 문자를 소문자로 바꿔줌
+  * `strtoupper()`
+    * 전달받은 문자열의 모든 문자를 대문자로 바꿔줌
+  * `ucfirst()`
+    * 전달받은 문자열의 첫 번째 문자만을 대문자로 바꿔줌
+  * `ucwords`()
+    * 전달받은 문자열에서 단어별로 첫 번째 문자만을 대문자로 바꿔줌
+
+  ```php
+  echo strtolower("HELLO, WORLD!")."\n"; // 모두 소문자로 바꿈. // hello, world!
+  echo strtoupper("hello, world!")."\n"; // 모두 대문자로 바꿈. // HELLO, WORLD!
+  echo ucfirst("hello, world!")."\n";    // 문자열의 첫 번째 문자만 대문자로 바꿈. // Hello, world!
+  echo ucwords("hello, world!");    // 각 단어의 첫 번째 문자를 대문자로 바꿈. // Hello, World!
+  ```
+
+* 문자열 합치고 나누기
+
+  * `explode()`
+    * 특정 문자를 기준으로 전달받은 문자열을 나누어서 하나의 배열로 반환함
+  * `implode()`, `join()`
+    * 전달받은 배열의 각 요소를 특정 문자를 사용하여 하나로 함쳐진 문자열로 반환함
+  * `strtok()`
+    * 전달받은 문자열을 특정 문자를 기준으로 토큰화함
+    * 해당 문자열을 한 번에 모두 나누지 않고, 한 번에 하나씩만 토큰화함
+    * 첫 번째 토큰 : 인수로 해당 문자열과 기준이 되는 문자를 함께 전달
+    * 두 번째 토큰 부터 : 기준이 되는 문자 전달
+
+  ```php
+  $str = "hello, beautiful, world!";
+  
+  $arr = explode(',', $str);  // ','를 기준으로 문자열을 나눔.
+  echo $arr[0]."\n";               // hello
+  echo $arr[1]."\n";               // beautiful
+  echo $arr[2]."\n";               // world!
+  
+  $str2 = implode('!', $arr); // '!'를 기준으로 문자열을 결합함.
+  echo $str2."\n";                   // hello! beautiful! world!
+  
+  $token = strtok($str2, '!');  // '!'를 기준으로 토큰화
+  echo $token."\n";                  // hello
+  while($token != ""){          // 문자열이 끝날 때까지
+      $token = strtok('!');     // '!'를 기준으로 토근화하고 출력함.
+      echo $token."\n";              // beautiful // world
+  }
+  ```
+
+* 문자열 대체하기
+
+  * `str_replace()`
+    * 해당 문자열에서 전달받은 문자열을 모두 찾은 후에, 찾은 문자열을 대체 문자열로 교체함
+  * `substr_replace()`
+    * 해당 문자열에서 특정 위치의 문자들을 대체 문자열로 교체함
+    * 세 번째 인수 : 교체를 시작할 부분의 인덱스
+    * 네 번째 인수 : 교체할 부분의 길이
+      * 전달된 길이가 양수인 경우 시작 인덱스부터 교체할 글자의 개수를 나타냄
+      * 전달된 길이가 음수인 경우 시작 인덱스부터 문자열 끝부터 음수의 절댓값까지의 문자열을 대체 문자열로 대체함
+      * 전달된 길이가 0인 경우 해당 문자열의 시작 인덱스에 대체 문자열을 삽입함
+      * 길이를 전달하지 않는 경우 시작 인덱스부터 해당 문자열의 끝까지 모두 대체됨
+
+  ```php
+  $str = "hello, world!";
+  echo str_replace('o', '*', $str)."\n";      // 문자열의 모든 'o'를 '*'로 대체함. // hell*, w*rld!
+  echo substr_replace($str, '*', 2)."\n";     // 세 번째 문자부터 끝까지를 '*'로 대체함. // he*
+  echo substr_replace($str, '*', -2)."\n";    // 끝에서 두 번째 문자부터 끝까지를 '*'로 대체함. // hello, worl*
+  echo substr_replace($str, '*', 2, 4)."\n";  // 세 번째 문자부터 네 글자를 '*'로 대체함. // he* world!
+  echo substr_replace($str, '*', 2, -4)."\n"; // 세 번째 문자부터 끝에서 다섯 번째 문자까지를 '*'로 대체함. // he*rld!
+  echo substr_replace($str, '*', 2, 0);  // 두 번째 문자 뒤에 '*'을 삽입함. // he*llo, world!
+  ```
+
+* 문자열 다듬기
+
+  * `ltrim()`
+    * 문자열 앞부분에 있는 공백 제거
+  * `rtrim()`, `chop()`
+    * 문자열 끝부분에 있는 공백 제거
+  * `trim()`
+    * 문자열의 처음과 끝부분에 있는 공백 모두 제거
+  * 제거하는 문자
+    * 띄어쓰기 " ", 탭 문자 "\\t", 줄 바꿈 문자 "\\n", "\\r", 널 문자 "\\0", 수직 탭 문자 "\\x0B"
+
+  ```php
+  $str = "  hello, world!  ";
+  echo "'".ltrim($str)."'\n"; // 문자열의 처음 부분 공백을 모두 지움. // 'hello, world!  '
+  echo "'".rtrim($str)."'\n"; // 문자열의 끝부분 공백을 모두 지움. // '  hello, world!'
+  echo "'".trim($str)."'";       // 문자열의 처음과 끝부분 공백을 모두 지움. // 'hello, world!'
+  ```
+
+#### 날짜와 시간 관련 함수
+
+* 날짜와 시간의 형식화
+
+  * `date()`
+
+    * 전달받은 형식에 맞춰 날짜와 시간 정보를 문자열로 반환함
+
+    * 수를 전달하지 않는 경우 현재 날짜와 시간의 타임스탬프 반환함
+
+      ```php
+      $array = getdate();
+      
+      foreach ($array as $key => $value) {
+          echo $key." ".$value."\n";
+          // seconds 4
+          // minutes 23
+          // hours 2
+          // mday 23
+          // wday 1
+          // mon 3
+          // year 2020
+          // yday 82
+          // weekday Monday
+          // month March
+          // 0 1584930184
+      }
+      ```
+
+    * 인수로 전달할 수 있는 날짜와 시간 표현의 형식(아래 표)
+
+    |     형태      | 설명                                                         | 예시                            |
+    | :-----------: | ------------------------------------------------------------ | ------------------------------- |
+    |       d       | 날짜를 두 자리 숫자로 표현함                                 | 00부터 31                       |
+    |       D       | 요일을 세 개의 문자로 표현함                                 | Mon에서 Sun                     |
+    |       j       | 날짜를 숫자로 표현함                                         | 1부터 31                        |
+    | l(소문자 'L') | 요일을 완전한 문자열로 표현함                                | Sunday부터 Saturday             |
+    |       N       | 요일을 ISO-8601 숫자로 표현함                                | 1(월요일)부터 7(일요일)         |
+    |       S       | 날짜 뒤에 영어 서수를 붙임                                   | st, nd, rd, th, j               |
+    |       w       | 요일을 숫자로 표현함                                         | 0(일요일)부터 6(토요일)         |
+    |       z       | 일 년 중 몇 번째 날인지를 수자로 표현함                      | 0부터 365                       |
+    |       W       | 일 년 중 몇 번째 주인지를 숫자로 표현함                      | 42(그 해의 42번째 주)           |
+    |       F       | 월을 완전한 문자열로 표현함                                  | January에서 December            |
+    |       m       | 월을 두 자리 숫자로 표현함                                   | 01부터 12                       |
+    |       M       | 월의 축약형을 세 개의 문자로 표현함                          | Jan에서 Dec                     |
+    |       n       | 월을 숫자로 표현함                                           | 1부터 12                        |
+    |       t       | 해당 월의 총일 수를 숫자로 표현함                            | 28부터 31                       |
+    |       L       | 윤년 여부를 표현함                                           | 윤년엔 1, 그 외엔 0             |
+    |       o       | ISO-8601 연도값으로 Y값과 같은 값을 나타냄<br>하지만 W값이 이전 해나 다음 해에 포함되면, 연도를 이 값으로 사용함 | 1999나 2003                     |
+    |       Y       | 연도를 완전한 네 자리 숫자로 표현함                          | 1999나 2003                     |
+    |       y       | 연도를 두 자리 숫자로 표현함                                 | 99나 03                         |
+    |       a       | 오전과 오후의 소문자를 표현함                                | am 또는 pm                      |
+    |       A       | 오전과 오후의 대문자를 표현함                                | AM 또는 PM                      |
+    |       B       | 견본 인터넷 시간을 표현함                                    | 000에서 999                     |
+    |       g       | 12시간 형식으로 시간을 표현함                                | 1부터 12                        |
+    |       G       | 24시간 형식으로 시간을 표현함                                | 0부터 23                        |
+    |       h       | 12시간 형식 시간을 두 자리 숫자로 표현함                     | 01부터 12                       |
+    |       H       | 24시간 형식 시간을 두 자리 숫자로 표현함                     | 00부터 23                       |
+    |       i       | 분을 두 자리 숫자로 표현함                                   | 00부터 59                       |
+    |       s       | 초를 두 자리 숫자로 표현함                                   | 00부터 59                       |
+    |       u       | 초를 마이크로초로 표현함                                     | 54321                           |
+    |       e       | 시간대(timezone) 식별자를 표현함                             | UTC, GMT                        |
+    |  I(대문자 i)  | 서머타임 적용 여부를 표현함                                  | 서머타임이면 1, 아니면 0        |
+    |       O       | 그리니치 시각(GMT)과 시차를 표현함                           | +0200                           |
+    |       P       | 시와 분 사이에 콜론이 들어가는 그리니치 시각(GMT)과 시차를 표현함 | +02:00                          |
+    |       T       | 시간대(timezone)를 나타내는 축약어                           | EST, MDT                        |
+    |       Z       | 시간대(timezone)를 나타내는 오프셋 초를 표현함.<br>UTC 서쪽은 항상 음수, UTC 동쪽은 항상 양수로 표현됨 | -43200부터 50400                |
+    |       c       | ISO-8601 형식의 날짜를 표현함                                | 2004-02-12T15:19:21+00:00       |
+    |       r       | RFC 2822 형식의 날짜를 표현함                                | Thu, 21 Dec 2000 16:01:07 +0200 |
+    |       U       | 타임스템프를 표현함                                          | time() 참조                     |
+
+    * 타임스탬프 : GMT 기준 1970년 1월 1일 0시 0분부터 지금까지의 시간을 초(second) 단위로 나타낸 것
+
+* 타임 존(Time Zone)
+
+  * `date_default_timezone_set()`
+    * 해당 스크립트에서 사용되는 날짜와 시간에 관련된 모든 함수에서 사용될 타임 존 설정함
+  * `date_default_timezone_get()`
+    * 현재 설정되어 있는 타임 존을 반환함
+
+  ```php
+  echo date_default_timezone_get()." : ".date("h:i:s\n"); // 현재 타임 존과 시간을 받아옴. // UTC : 02:25:19
+  date_default_timezone_set("America/Los_Angeles");     // 타임 존을 변경함.
+  echo date_default_timezone_get()." : ".date("h:i:s"); // America/Los_Angeles : 07:25:19
+  ```
+
+* 날짜의 유효성 검사
+
+  * `checkdate()`
+    * 전달받은 날짜의 유효성 검사함
+    * 인수로 월, 일, 연도를 전달하면, 해당 날짜가 유효한 날짜인지 확인함
+    * 윤년까지 고려함
+    * 검사항목
+      * 월이 1월부터 12월까지인지 검사함
+      * 일자가 해당 월에 존재하는 날짜인지를 검사함
+      * 연도가 0에서 32767까지의 정수인지 검사함
+    * 날짜가 유효하면 true 반환함
+
+  ```php
+  var_dump(checkdate(1, 31, 2000)); // 유효한 날짜 // bool(true)
+  var_dump(checkdate(2, 31, 2000)); // 유효하지 않은 날짜 // bool(false)
+  ```
+
+#### 수학 관련 함수
+
+* 최댓값과 최솟값
+
+  * `max()`
+    * 전달받은 수 중에서 가장 큰 수를 반환함
+  * `min()`
+    * 전달받은 수 중에서 가장 작은 수를 반환함
+
+* 올림과 내림
+
+  * `floor()`
+    * 인수로 전달받은 값과 같거나 작은 수 중에서 가장  큰 정수를 반환함
+  * `ceil()`
+    * 인수로 전달받은 값과 같거나 큰 수 중에서 가장 작은 정수를 반환함
+  * `round()`
+    * 소수점에서의 반올림
+
+  ```php
+  echo floor(10.95);  // 10 
+  echo floor(11.01);  // 11
+  echo floor(-10.95); // -11
+  echo floor(-11.01); // -12
+  
+  echo ceil(10.95);   // 11
+  echo ceil(11.01);   // 12
+  echo ceil(11);      // 11
+  echo ceil(-10.95);  // -10
+  echo ceil(-11.01);  // -11
+  
+  echo round(10.49);  // 10
+  echo round(10.5);   // 11
+  echo round(-10.5);  // -11
+  echo round(-10.51); // -11
+  ```
+
+* 지수와 로그
+
+  * `pow()`
+    * 전달받은 수의 거듭제곱을 반환함
+    * 첫 번째 인수 : 밑수, 두 번째 인수 : 지수
+  * `exp()`
+    * 인수로 지수를 전달받아, e의 거듭제곱을 계산하여 반환함
+  * `log()`
+    * 전달받은 수의 자연로그 값을 계산하여 반환함
+
+  ```php
+  echo "2의 3제곱은 ".pow(2, 3)."입니다.\n"; // 2의 3제곱은 8입니다.
+  echo "e의 3제곱은 ".exp(3)."입니다.\n"; // e의 3제곱은 20.085536923188입니다.
+  echo "log3은 ".log(3)."입니다."; // log3은 1.0986122886681입니다.
+  ```
+
+* 삼각 함수
+
+  * `sin()`
+    * 전달받은 수의 사인값을 반환함 
+  * `cos()`
+    * 전달받은 수의 코사인값을 반환함
+  * `tan()`
+    * 전달받은 수의 탄젠트값을 반환함
+  * `pi()`
+    * 파이(π) 값을 반환함
+    * `M_PI` 상수와 같은 값 반환함
+
+  ```php
+  echo "sin3.14는 ".sin(pi()/2)."입니다.\n"; // sin(π/2) == 1 // sin3.14는 1입니다.
+  echo "cos3.14는 ".cos(M_PI)."입니다.\n";   // cos(π) == -1 // cos3.14는 -1입니다.
+  echo "tan3.14는 ".tan(M_PI/4)."입니다.\n"; // tan(π/4) == 1 // tan3.14는 1입니다.
+  ```
+
+* 기타 함수
+
+  * `abs()`
+    * 전달받은 수의 절댓값을 반환함
+  * `rand()`
+    * 0보다 크거나 같고 `getrandmax()` 함수의 반환값보다 작은 하나의 정수를 무작위로 생성하여 반환함
+  * `getrandmax()`
+    * `rand()` 함수로 생성할 수 있는 정수의 최댓값을 나타냄
+
+  ```php
+  echo "-3의 절댓값은 ".abs(-3)."입니다.\n"; // -3의 절댓값은 3입니다.
+  echo "0부터 ".getrandmax()."까지의 정수를 하나 무작위로 생성합니다 : ".rand(); // 0부터 2147483647까지의 정수를 하나 무작위로 생성합니다 : 1330635331
+  ```
+
+#### 정규 표현식 관련 함수
+
+* `preg_match()`
+
+  * 해당 문자열에서 전달받은 정규 표현식과 일치하는 패턴 검색
+
+  * 문법
+
+    ```php
+    preg_match($pattern, $subject [,$matches]);
+    ```
+
+  * 첫 번째 인수로 전달받은 정규 표현식에 해당하는 패턴을 두 번째 인수로 전달받은 문자열에서 검색함
+
+  * 반환값
+
+    * 검색 결과를 배열로 반환함
+    * 또는 세 번째 인수로 반환값이 저장될 배열을 직접 전달 가능
+    * 일치하는 패턴이 존재하면 1을 반환함
+    * 일치하는 패턴이 존재하지 않으면 0을 반환함
+
+  * 정규 표현식에 해당하는 패턴이 검색되면 검색 중단함
+
+* `preg_match_all()`
+
+  * 해당 문자열에서 전달받은 정규 표현식과 일치하는 패턴을 모두 검색하여, 세 먼째 인수로 전달되는 배열에 저장함
+
+  ```php
+  $subject = "bcabcAB";
+  
+  // 기본 설정으로 검색 패턴을 비교할 때 대소문자를 구분함.
+  echo preg_match_all('/AB/', $subject, $matches_01)."\n";      // "AB" // 1
+  var_dump($matches_01);
+  
+  // 검색 패턴을 비교할 때 대소문자를 구분하지 않도록 설정함.
+  echo preg_match_all('/AB/i', $subject, $matches_02)."\n"; // "ab", "AB" // 2
+  var_dump($matches_02);
+  ```
+
+* `preg_replace()`
+
+  * 해당 문자열에서 전달받은 정규 표현식과 일치하는 패턴을 검색하여, 해당 부분을 두 번째 인수로 전달되는 문자열로 대체한 새로운 문자열을 반환함
+
+  ```php
+  $subject = "abcdef defabc";
+  
+  // 단어가 문자열 "abc"로 시작하는 경우를 검색하여, 해당 부분 문자열을 'ABC'로 대체함.
+  $match_01 = preg_replace('/^abc/', 'ABC',$subject);
+  echo $match_01."\n"; // ABCdef defabc
+  
+  // 단어가 문자열 "abc"로 끝나는 경우를 검색하여, 해당 부분 문자열을 'ABC'로 대체함.
+  $match_02 = preg_replace('/abc$/', 'ABC', $subject);
+  echo $match_02; // abcdef defABC
+  ```
+
+* `filter_var()`
+
+  * 유효한 형식의 이메일 주소인지 확인해주는 함수
+
+  ```php
+  $com = "help@abcd.com";
+  $co = "help@abcd.co.kr";
+  
+  if (filter_var($com, FILTER_VALIDATE_EMAIL)) {
+      echo $com."\n"; // help@abcd.com
+  } else {
+      echo "{$com}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  
+  if (filter_var($co, FILTER_VALIDATE_EMAIL)) {
+      echo $co."\n"; // help@abcd.co.kr
+  } else {
+      echo "{$co}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  ```
+
+## 정규 표현식(regular expression)
+
+* 문자열에서 특정한 규칙을 가지는 문자열의 집합을 찾아내기 위한 검색 패턴
+
+* 모든 종류의 문자열 검색이나 교체 등의 작업에서 사용 가능
+
+* PHP에서 지원하는 정규 표현식
+
+  * POSIX
+    * 실행 속도가 빠름
+  * PCRE(Perl-Compatible Regular Expression)
+    * POSIX 정규 표현식을 확장
+    * POSIX에 비해 더 강력하고 유연하게 동작함
+
+* literal
+  * 슬래시(`/`) 기호로 시작하여, 슬래시(`/`) 기호로 끝남
+
+  * 필요에 따라 플래그를 추가하여 기본 검색설정 변경 가능
+
+    ```php
+    /검색패턴/플래그
+    ```
+
+### 단순한 패턴 검색
+
+* 찾고자 하는 문자열을 직접 나열하여 패턴 검색을 함
+
+  ```php
+  /abc/
+  ```
+
+  * 위의 표현식으로 검사하면 "abc"라는 문자열만 일치할 것
+
+  ```php
+  $subject = "간장 공장 공장장은 강 공장장이고, 된장 공장 공장장은 장 공장장이다.";
+  
+  if (preg_match('/공장/', $subject)) {
+      echo "해당 문자열에서 '공장'을 발견했습니다.\n"; // 해당 문자열에서 '공장'을 발견했습니다.
+  } else {
+      echo "해당 문자열에서 '공장'을 발견하지 못했습니다.\n";
+  }
+  
+  if (preg_match('/장공/', $subject)) {
+      echo "해당 문자열에서 '장공'을 발견했습니다.\n";
+  } else {
+      echo "해당 문자열에서 '장공'을 발견하지 못했습니다.\n"; // 해당 문자열에서 '장공'을 발견하지 못했습니다.
+  }
+  ```
+
+### 플래그(flag)
+
+* 정규 표현식 literal을 작성할 때 플래그를 사용하여 기본 검색 설정 변경 가능
+
+  | 플래그(flag) | 설명                                                         |
+  | :----------: | ------------------------------------------------------------ |
+  |      i       | 검색 패턴을 비교할 때 대소문자를 구분하지 않도록 설정함      |
+  |      g       | 검색 패턴을 비교할 때 일치하는 모든 부분을 선택하도록 설정함 |
+  |      m       | 검색 패턴을 비교할 때 여러 줄의 입력 문자열을 그 상태 그대로 여러 줄로 비교하도록 설정함 |
+  |      y       | 대상 문자열의 현재 위치부터 비교를 시작하도록 설정함         |
+  |      u       | 대상 문자열이 UTF-8로 인코딩된 것으로 설정함                 |
+
+  ```php
+  $subject = "bcabcAB";
+  
+  // 기본 설정으로 검색 패턴을 비교할 때 대소문자를 구분함.
+  echo preg_match_all('/AB/', $subject, $matches_01)."\n";      // "AB" // 1
+  var_dump($matches_01);
+  
+  // 검색 패턴을 비교할 때 대소문자를 구분하지 않도록 설정함.
+  echo preg_match_all('/AB/i', $subject, $matches_02)."\n"; // "ab", "AB" // 2
+  var_dump($matches_02);
+  ```
+
+### 정규 표현식의 기초
+
+* 특수 문자(special characters)
+
+  * 정규 표현식에서 사용하는 특정 의미를 가진 기호
+  * 정확히 일치하는 패턴보다 더 복잡한 조건을 사용하는 경우에 사용함(숫자만 검색, 띄어쓰기 찾기 등)
+  * 메타(meta)라고도 함
+
+  | 특수문자 | 설명                                               |
+  | :------: | -------------------------------------------------- |
+  |    .     | 줄 바꿈 문자(\\n)를 제외한 임의의 한 문자를 의미함 |
+  |    ?     | 해당 문자 패턴이 0번 또는 1번만 반복됨             |
+  |    *     | 해당 문자 패턴이 0번 이상 반복됨                   |
+  |    +     | 해당 문자 패턴이 1번 이상 반복됨                   |
+  |  {...}   | 반복되는 횟수를 지정함                             |
+  |    ^     | 문자열의 처음을 의미함                             |
+  |    $     | 문자열의 끝을 의미함                               |
+  |    \     | 특수문자를 무시함                                  |
+  |    \|    | 선택을 의미함(OR)                                  |
+  |  (...)   | 그룹화의 시작과 끝을 의미함                        |
+
+  ```php
+  /.ap/         // 문자열 "ap" 앞에 임의의 한 문자가 등장하는 문자열 : aap, bap, cap, @ap, #ap, ...
+  
+  /a?b/         // b 앞에 a가 0번 또는 1번 등장하는 문자열 : b, ab
+  /a*b/         // b 앞에 a가 0번 이상 등장하는 문자열 : b, ab, aab, aaab, ...
+  
+  /a+b/         // b 앞에 a가 1번 이상 등장하는 문자열 : ab, aab, aaab, aaaab, ...
+  /a{2,4}b/     // b 앞에 a가 2번 이상 4번 이하 등장하는 문자열 : aab, aaab, aaaab
+  /a{2,}b/      // b 앞에 a가 2번 이상 등장하는 문자열 : aab, aaab, aaaab, aaaaab, ...
+  
+  /^abc/        // abc로 시작하는 문자열 : abc, abcd, abcdef, ...
+  
+  /abc$/        // abc로 끝나는 문자열 : abc, zabc, xyzabc, ...
+  
+  /abc|def|ghi/ // abc, def 또는 ghi 중 하나의 문자열
+  ```
+
+* 양화사(quantifier)
+
+  * 수량을 나타냄
+  * '`*`'
+    * 바로 앞의 문자가 0번 이상 나타날 경우를 검색함({0, }와 같음)
+  * '`+`'
+    * 바로 앞의 문자가 1번 이상 나타날 경우를 검색함({1, }와 같음)
+  * '`?`'
+    * 바로 앞의 문자가 0번 또는 1번만 나타날 경우를 검색함({0, 1}과 같음)
+  * '`{n, m}`'
+    * 바로 앞의 문자가 반복되는 횟수를 지정함
+    * 바로 앞의 문자가 최소 n번 이상 최대 m번 이하로 나타날 경우를 검색함(n과 m은 반드시 양의 정수이어야만 함)
+
+  ```php
+  $subject = "PHP is cooooool!";
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 0 또는 1번 나타나는 경우를 검색함.
+  echo preg_match_all('/o?l/', $subject, $match_01); // 1
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 0번 이상 나타나는 경우를 검색함.
+  echo preg_match_all('/o*l/', $subject, $match_02); // 1
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 1번 이상 나타나는 경우를 검색함.
+  echo preg_match_all('/o+l/', $subject, $match_03); // 1
+  
+  // 영문 소문자가 1번 이상 나타나는 경우를 검색함.
+  // 즉, 영문 소문자만으로 이루어진 부분 문자열을 검색함.
+  echo preg_match_all('/[a-z]+/', $subject, $match_04); // 2
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 최소 2번 이상 최대 4번 이하로 나타나는 경우를 검색함.
+  preg_match_all('/o{2,4}l/', $subject, $match_01);
+  var_dump($match_01);
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 최소 2번 이상 나타나는 경우를 검색함.
+  preg_match_all('/o{2,}l/', $subject, $match_02);
+  var_dump($match_02);
+  
+  // 문자 'l' 바로 앞에 문자 'o'가 정확히 6번 나타나는 경우를 검색함.
+  preg_match_all('/o{6}l/', $subject, $match_03);
+  var_dump($match_03);
+  ```
+
+* 위치 문자
+
+  * 해당 문자열에서 패턴을 검색할 단어의 위치 지정함
+  * '`^`'
+    * 단어의 맨 앞에 위치한 해당 패턴만을 검색함
+  * '`$`'
+    * 단어의 맨 뒤에 위치한 해당 패턴만을 검색함
+
+  ```php
+  $subject = "abcdef defabc";
+  
+  // 단어가 문자열 "abc"로 시작하는 경우를 검색하여, 해당 부분 문자열을 'ABC'로 대체함.
+  $match_01 = preg_replace('/^abc/', 'ABC',$subject);
+  echo $match_01."\n"; // ABCdef defabc
+  
+  // 단어가 문자열 "abc"로 끝나는 경우를 검색하여, 해당 부분 문자열을 'ABC'로 대체함.
+  $match_02 = preg_replace('/abc$/', 'ABC', $subject);
+  echo $match_02; // abcdef defABC
+  ```
+
+* 선택 문자
+
+  * '`|`'
+
+    * 정규 표현식에서 여러 개의 검색 패턴 사용할 수 있도록 함
+    * 특수문자 '`|`'로 구분된 정규 표현식 중 어느 하나에만 일치해도 검색됨
+
+    ```php
+    $subject = "ABCdefGHIjkl";
+    
+    // 문자열 'abc' 또는 'def' 또는 'jkl'만을 검색함.
+    // 즉, 위의 세 문자열 중 어느 하나에만 일치해도 검색됨.
+    preg_match_all('/abc|def|jkl/', $subject, $match);
+    var_dump($match);
+    ```
+
+* 문자 클래스(character class)
+
+  * 정규 표현식에서 명시된 범위에 해당하는 한 문자만을 선택하기 위해 사용되는 문자
+  * 꺾쇠 괄호 ('`[]`') 사용하여 표현함
+
+  ```php
+  /[0-3]/        // 0부터 3까지의 숫자에 해당하는 한 문자
+  /[a-z]/        // 영문 소문자에 해당하는 한 문자
+  /[0-9a-zA-Z]/  // 숫자 또는 영문 대소문자에 해당하는 한 문자
+  ```
+
+  ```php
+  $subject = "@ap";
+  
+  preg_match("/.ap/", $subject, $match_01);        // "ap" 문자열 앞에 임의의 한 문자가 나타나는 경우를 검색함.
+  var_dump($match_01);
+  preg_match("/[a-zA-Z]ap/", $subject, $match_01); // "ap" 문자열 앞에 영문자 한 문자가 나타나는 경우를 검색함.
+  var_dump($match_01);
+  ```
+
+* POSIX 문자 클래스
+
+  * POSIX 정규 표현식에서만 사용할 수 있는 문자 클래스
+
+  | 문자 클래스 | 설명                                                         |
+  | :---------: | ------------------------------------------------------------ |
+  |  [:alnum:]  | 영문자와 숫자에 포함되는지를 확인함                          |
+  |  [:alpha:]  | 영문 대소문자에 포함되는지를 확인함                          |
+  |  [:lower:]  | 영문 소문자에 포함되는지를 확인함                            |
+  |  [:upper:]  | 영문 대문자에 포함되는지를 확인함                            |
+  |  [:digit:]  | 십진법 숫자에 포함되는지를 확인함                            |
+  | [:xdigit:]  | 16지넙 숫자나 문자에 포함되는지를 확인함                     |
+  |  [:punct:]  | 구두점에 포함되는지를 확인함                                 |
+  |  [:blank:]  | 탭과 띄어쓰기에 포함되는지를 확인함                          |
+  |  [:space:]  | 공백 문자에 포함되는지를 확인함                              |
+  |  [:cntrl:]  | 제어 문자에 포함되는지를 확인함                              |
+  |  [:print:]  | 출력할 수 있는 문자에 포함되는지를 확인함                    |
+  |  [:graph:]  | 띄어쓰기를 제외한 모든 출력할 수 있는 문자에 포함되는지를 확인함 |
+
+  * 기본적으로 꺾쇠 괄호([])를 포함하고 있음
+  * 꺾쇠 괄호 두 번 사용하여 표현함
+
+  ```php
+  /[[:alpha:]][[:digit:]]/ // 첫 번째 문자가 영문자이고, 두 번째 문자가 숫자인 길이가 2인 문자열
+                           // a1, a2, ..., b1, b2, ...
+  ```
+
+  ```php
+  $subject = "Hello PHP is cool!";
+  
+  // 첫 번째와 세 번째 문자가 영문 소문자이고, 두 번째 문자가 띄어쓰기인 경우를 검색함.
+  preg_match_all('/[[:lower:]][[:space:]][[:lower:]]/', $subject, $match_01);
+  var_dump($match_01);
+  
+  // 첫 번째 문자가 영문 소문자이고, 두 번째 문자가 띄어쓰기, 세 번째 문자가 영문 대문자인 경우를 검색함.
+  preg_match('/[[:lower:]][[:space:]][[:upper:]]/', $subject, $match_02);
+  var_dump($match_02);
+  ```
+
+### 정규 표현식의 활용
+
+* 전화번호 확인
+
+  * 해당 전화번호가 유효한 형식의 전화번호인지 확인
+
+  * 정규 표현식
+
+    ```php
+    /^[[:digit:]]{2}\-[[:digit:]]{4}\-[[:digit:]]{4}/     // 02-1234-5678, ...
+    ```
+
+    * 전화번호의 맨 앞자리가 2자리이고 국번이 4자리인 전환번호만 검색 가능
+
+    ```php
+    /^[[:digit:]]{2,3}\-[[:digit:]]{3,4}\-[[:digit:]]{4}/ // 02-1234-5678, 031-123-5678, 010-1234-5678, ...
+    ```
+
+    * 전화번호의 맨 앞자리가 2자리나 3자리이고 국번이 3자리나 4자리인 전화번호까지 검색 가능
+
+  ```php
+  $tel = "02-1234-5678";
+  $cell = "010-1234-5678";
+  $pattern_01 = "/^[[:digit:]]{2}\-[[:digit:]]{4}\-[[:digit:]]{4}/";
+  
+  if (preg_match($pattern_01, $tel, $matches_01)) {
+      var_dump($matches_01);
+  } else {
+      echo "{$tel}은 유효한 형식의 전화번호가 아닙니다.\n";
+  }
+  
+  if (preg_match($pattern_01, $cell, $matches_02)) {
+      var_dump($matches_02);
+  } else {
+      echo "{$cell}은 유효한 형식의 전화번호가 아닙니다.\n"; // 010-1234-5678은 유효한 형식의 전화번호가 아닙니다.
+  }
+  
+  $pattern_02 = "/^[[:digit:]]{2,3}\-[[:digit:]]{3,4}\-[[:digit:]]{4}/";
+  if (preg_match($pattern_02, $tel, $matches_03)) {
+      var_dump($matches_03);
+  } else {
+      echo "{$tel}은 유효한 형식의 전화번호가 아닙니다.\n";
+  }
+  
+  if (preg_match($pattern_02, $cell, $matches_04)) {
+      var_dump($matches_04);
+  } else {
+      echo "{$cell}은 유효한 형식의 전화번호가 아닙니다.\n";
+  }
+  ```
+
+* 이메일 주소 확인
+
+  * 해당 이메일 주소가 유효한 형식의 이메일 주소인지 확인함
+
+  * 정규 표현식
+
+    ```php
+    [0-9a-zA-Z_-]+
+    ```
+
+    * 숫자나 영문 대소문자, 언더스코어(_) 또는 '-'기호를 포함한 문자가 1번 이상 반복되는 문자열을 의미함
+
+    ```php
+    /([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/      // help@abcd.com, ...
+    ```
+
+    * '@'문자와 '.'문자를 각각 하나씩만 포함하는 이메일 주소만을 검색함
+
+    ```php
+    /([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}/ // help@abcd.com, help@abcd.co.kr, ...
+    ```
+
+    * '.'문자를 2개 이상 포함하는 이메일 주소 검색함
+
+    ```php
+    (\.[0-9a-zA-Z_-]+){1,2}
+    ```
+
+    * '.'문자로 시작하고, 숫자나 영문 대소문자, 언더스코어(_) 또는 '-'기호를 포함한 문자가 1번 이상 반복되는 문자열이 1번 또는 2번 반복되는 문자열을 의미함
+
+  ```php
+  $com = "help@abcd.com";
+  $co = "help@abcd.co.kr";
+  $pattern_01 = "/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)\.([0-9a-zA-Z_-]+)/";
+  
+  if (preg_match($pattern_01, $com, $matches_01)) {
+      var_dump($matches_01[0]); // string(13) "help@abcd.com"
+  } else {
+      echo "{$com}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  
+  if (preg_match($pattern_01, $co, $matches_02)) {
+      var_dump($matches_02[0]); // string(12) "help@abcd.co"
+  } else {
+      echo "{$co}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  
+  $pattern_02 = "/([0-9a-zA-Z_-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}/";
+  if (preg_match($pattern_02, $com, $matches_03)) {
+      var_dump($matches_03[0]); // string(13) "help@abcd.com"
+  } else {
+      echo "{$com}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  
+  if (preg_match($pattern_02, $co, $matches_04)) {
+      var_dump($matches_04[0]); // string(15) "help@abcd.co.kr"
+  } else {
+      echo "{$co}은 유효한 형식의 이메일 주소가 아닙니다.\n";
+  }
+  ```
+
+* 한글 확인
+
+  * 해당 문자가 한글인지 확인함
+
+  * 한글 소리 마디(hangul syllables)
+
+    * 초성 19개, 중성 21개, 종성 28개로 이루어지는 총 11,172개의 한글 문자를 가리킴
+
+  * 정규 표현식
+
+    ```php
+    /[가-힣]/                // 한글 소리 마디
+    ```
+
+    * 현대 한글에서 표현할 수 있는 11,172개의 한글 소리 마디를 모두 검색할 수 있음
+    * 언어 설정이 한글이 아닌 시스템에서 동작이 안 될 수 있음
+
+    ```php
+    /[\\x{ac00}-\\x{d7af}]/u // 한글 소리 마디의 유니코드 범위 목록값
+    ```
+
+    * 현대 한글에서 표현할 수 있는 11,172개의 한글 소리 마디를 모두 검색할 수 있음
+    * 'u'플래그를 추가하여 해당 정규 표현식 문자열을 UTF-8로 인코딩된 것처럼 취급 가능
+
+  ```php
+  $eng = "gil-dong Hong";
+  $kor = "홍길동";
+  $pattern = "/[가-힣]+/"; // 한글 소리 마디
+  
+  if (preg_match($pattern, $eng, $matches_01)) {
+      var_dump($matches_01);
+  } else {
+      echo "{$eng}에는 한글이 포함되어 있지 않습니다.\n"; // gil-dong Hong에는 한글이 포함되어 있지 않습니다.
+  }
+  
+  if (preg_match($pattern, $kor, $matches_02)) {
+      var_dump($matches_02);
+  } else {
+      echo "{$eng}에는 한글이 포함되어 있지 않습니다.\n";
+  }
+  ```
+
+  ```php
+  // 한글만 제거
+  $text = "123가나abc다라";
+  $pattern = "/[\\x{ac00}-\\x{d7af}]+/u";         // 한글 소리 마디(UTF-8)
+  
+  $arr = preg_match_all('/./u', $text, $matches); // 줄 바꿈 문자(\n)를 제외한 임의의 한 문자씩 검색함.
+  var_dump($arr); // int(10)
+  echo preg_replace($pattern, '', $text);         // 해당 문자가 한글이면, 빈 문자열로 대체함. // 123abc
+  ```
+
+## 클래스(class)
+
+* 객체(object)를 만들어 내기 위한 틀이나 설계도와 같은 개념
+
+## 객체(object)
+
+* 실생활에서 우리가 인식할 수 있는 사물과 같은 개념
+
+* `declare()`
+
+* `register_tick_function()`
+
+  * 명령문을 실행할 때마다 호출하는 함수(명령문 먼저 실행됨)
+  * 함수 호출시부터 명령문을 실행할 때마다 호출됨
+
+  ```php
+  register_tick_function(callable $function [,mixed $...]) : bool
+  ```
+
+  * return 값 : bool
+
+  * parameter로 함수 대입
+
+    ```php
+    function tick_handler()
+    {
+        echo "tick_handler\n"
+    }
+    
+    $y = 1; // register_tick_function() 호출 전이므로 실행되지 않음
+    
+    register_tick_function('tick_handler', true) // tick_handler()
+    
+    $a = 1; // 명령문 실행되면서 register_tick_function함수도 실행됨 // tick_handler()
+    
+    if ($a > 0) {
+        $a += 2;// 명령문 실행되면서 register_tick_function함수도 실행됨 // tick_handler()
+        print($a); // 명령문 실행되면서 register_tick_function함수도 실행됨 // 3tick_handler()
+    }
+    ```
+
+  * parameter로 클래스 안의 함수 대입
+
+    ```php
+    declare(ticks=1);
+    
+    class Counter {
+        private $counter = 0;
+    
+        public function increase()
+        {
+            $this->counter++;
+        }
+    
+        public function print()
+        {
+            return $this->counter;
+        }
+    }
+    
+    $obj = new Counter;
+    
+    register_tick_function([&$obj, 'increase'], true); // increase() 실행됨
+    
+    for ($i = 0; $i < 100; $i++)
+    {
+        $a = 3; // increate() 실행됨
+    }
+    echo $a; // 3 // increase() 실행됨
+    
+    var_dump("Number of basic low level operations: " . $obj->print()); // string(41) "Number of basic low level operations: 103" // increase() 실행됨 but 출력되는 값에 적용되지 않음(출력이 먼저)
+    ```
+
+* `unregister_tick_function()`
+
+  * `register_tick_function()`을 해제하는 함수
+
+    ```php
+    declare(ticks=1);
+    
+    class Counter {
+        private $counter = 0;
+    
+        public function increase()
+        {
+            $this->counter++;
+        }
+    
+        public function print()
+        {
+            return $this->counter;
+        }
+    }
+    
+    $obj = new Counter;
+    
+    register_tick_function([&$obj, 'increase'], true); // increase() 실행됨
+    
+    for ($i = 0; $i < 100; $i++)
+    {
+        $a = 3; // increate() 실행됨
+    }
+    unregister_tick_function([&$obj, 'increase']);
+    echo $a; // 3 // increase() 실행됨
+    
+    var_dump("Number of basic low level operations: " . $obj->print()); // string(41) "Number of basic low level operations: 102" // increase() 실행됨 but 출력되는 값에 적용되지 않음(출력이 먼저)
+    ```
+
+* 
+
+* `var_dump()`
+
+​    
 
