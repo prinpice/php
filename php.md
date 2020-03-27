@@ -3118,9 +3118,110 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
 
 * 객체(object)를 만들어 내기 위한 틀이나 설계도와 같은 개념
 
+### 구조
+
+* 문법
+
+  ```php
+  class [클래스명]
+  {
+      클래스의 property와 method 정의;
+  }
+  ```
+
+### 클래스 이름
+
+* 숫자로 시작 불가
+* 영문자(대소문자), 숫자, 언더스코어(_)로만 구성됨
+* 이름 사이에 공백 포함 불가
+* 대소문자 구분함
+* 예약어(reserved word) 사용 불가
+
+### property
+
+* 클래스만의 상수와 변수
+* object의 상태(state)를 구현함
+* instance마다 값이 다름
+
+### method
+
+* 연산
+* object의 행동(behavior)을 구현함
+
+### 생성자(constructor)
+
+* 새로운 객체를 생성할 때마다 클래스가 호출하는 메서드
+
+* 객체가 생성될 때마다 자동으로 호출됨
+
+* 해당 객체의 프로퍼티를 초기화 하거나, 필요한 다른 객체를 생성하는 등의 초기화 작업을 수행함
+
+* 매개변수 가질 수 있음
+
+* 이름
+
+  ```php
+  __construct()
+  ```
+
+* 문법
+
+  ```php
+  class [CLASSNAME]
+  {
+      function __construct([PARAMETER1], [PARAMETER2], ...)
+      {
+          생성자가 호출될 때 실행될 코드;
+      }
+  }
+  ```
+
+### 소멸자(destructor)
+
+* 해당 객체를 삭제할 때 호출함
+
+* 매개변수 가질 수 없음
+
+* 이름
+
+  ```php
+  __destruct()
+  ```
+
+* 문법
+
+  ```php
+  class [CLASSNAME]
+  {
+      function __destruct()
+      {
+          소멸자가 호출될 때 실행될 코드;
+      }
+  }
+  ```
+
+  
+
 ## 객체(object)
 
 * 실생활에서 우리가 인식할 수 있는 사물과 같은 개념
+
+## 객체 지향 프로그래밍(OOP, Object-Oriented Programming)
+
+* 모든 데이터를 객체(object)로 취급함
+* 코드 관리, 코드 변경, 유지 관리가 쉬움
+* 특징
+  * 추상화(abstraction)
+  * 캡슐화(encapsulation)
+    * 작성된 코드 재사용
+  * 정보 은닉(data hiding)
+    * 체의 실제 구현내용을 외부에서 알지 못하도록 감춤
+    * 객체의 인터페이스를 통해서만 데이터에 접근 가능
+    * 보안 강화
+  * 상속성(inheritance)
+    * 클래스 간의 계층 관계를 만들어 논리적이고 체계적으로 다른 클래스의 기능과 데이터를 사용할 수 있도록 함
+  * 다형성(polymorphism)
+    * 하나의 변수나 함수 이름이 상황에 따라 다른 의미로 해석될 수 있도록 함
 
 * `declare()`
 
