@@ -1980,6 +1980,13 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
 
 ### 내장 함수
 
+#### magic method
+
+* 특수한 기능을 위해 미리 정의한 메소드
+* 메소드 이름, 매개변수, 반환 타입, 호출의 타이밍만 정해져 있음
+* 내용은 사용자가 직접 작성 가능함
+* 모든 매직 메소드의 이름은 두 개의 언더스코어(`__`)로 시작함
+
 #### 변수 관련 함수
 
 * 변수의 타입 변경
@@ -3200,11 +3207,138 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
   }
   ```
 
+
+### 인스턴스(instance)
+
+* 메모리에 생성된 객체
+
+* 생성
+
+  ```php
+  $[OBJECTNAME] = new [CLASSNAME]([ARGUMENT1], [ARGUMENT2], ...);
+  ```
+
+### 클래스 멤버에 접근
+
+* `->`
+
+  * property에 접근
+  * method를 호출
+
+  ```php
+  $[OBJECTNAME]->[PROPERTYNAME];
+  $[OBJECTNAME]->[METHODNAME];
+  ```
+
+* property와 method의 접근 범위 제한 가능
+
+  * 클래스 외부에서 접근 제어자에 따라 접근 가능/불가능
+
+* `$this`
+
+  * 해당 instance가 자기 자신을 가리키는 데 사용하는 변수
+  * 객체 내부에서 해당 instance의 property에 접근하고 싶을 때 사용가능
+
+  ```php
+  $this->[PROPERTYNAME];
+  ```
+
+### 접근 제어(access modifier)
+
+* `public`
+
+  * 외부로 공개됨
+  * 해당 객체를 사용하는 어디에서나 직접 접근 가능
+  * `var`키워드로 class의 property를 정의하는 경우, 해당 property의 접근 제어가 자동으로 public로 정의됨
+  * method를 작성할 때 접근 제어자를 생략하는 경우, 자동으로 public로 정의됨
+  * `private`멤버나 `protected`멤버와 프로그램 사이의 interface 역할을 수행함
+
+* `private`
+
+  * 외부로 공개되지 않음
+  * 해당 클래스의 멤버에서만 접근 가능
+
+* `protected`
+
+  * 해당 클래스의 멤버와 해당 클래스를 상속받은 자식 클래스에서만 접근 가능
+    * 상위 클래스에 대해서 public멤버처럼 취급됨
+    * 외부에서는 private멤버처럼 취급됨
+
+  ```php
+  class ClassName
+  {
+      public $publicVar;
+      private $privateVar;
+      protected $protectedVar;
   
+      public function __constructor()
+      {
+          $this->publicVar = "public property\n";
+          $this->privateVar = "private property\n";
+          $this->protectedVar = "protected property\n";
+      }
+  
+      public function publicMethod()
+      {
+          echo "public method\n";
+          $this->protectedMethod();
+          $this->privateMethod();
+      }
+      protected function protectedMethod()
+      {
+          echo "protected method\n";
+          echo $this->protectedVar;
+      }
+      private function privateMethod()
+      {
+          echo "private method\n";
+          echo $this->privateVar;
+      }
+  }
+  
+  $object = new ClassName();
+  
+  echo $object->publicVar;      // 접근 가능
+  //echo $object->protectedVar; // 접근 불가능
+  //echo $object->privatev;     // 접근 불가능
+  
+  $object->publicMethod();      // 호출 가능 // public method
+  //$object->protectedMethod(); // 호출 불가능
+  //$object->privateMethod();   // 호출 불가능
+  ```
 
-## 객체(object)
+### 정보 은닉(data hiding)
 
-* 실생활에서 우리가 인식할 수 있는 사물과 같은 개념
+* 외부에서 바로 데이터로 접근하지 못하게 함
+
+* 클래스 외부에서 `private`멤버와 `protected`멤버로 직접 접근 불가능
+
+* `public`메소드를 사용하여 해당 클래스의 `private`멤버나 `protected`멤버로 접근 가능
+
+  ```php
+  class ClassName
+  {
+      private $privateVar;
+  
+      public function __constructor()
+      {
+          $this->privateVar = "private property";
+      }
+  
+      public function getValue()
+      {
+          return $this->privateVar;
+      }
+  
+      public function setValue($value)
+      {
+          $this->privateVar = $value;
+      }
+  }
+  $object = new ClassName();
+  $object->setValue("hello"); // setValue() 함수를 통해 $private의 값을 변경할 수 있음.
+  echo $object->getValue();     // getValue() 함수를 통해 $private의 값을 출력할 수 있음. // hello
+  ```
 
 ## 객체 지향 프로그래밍(OOP, Object-Oriented Programming)
 
@@ -3215,13 +3349,436 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
   * 캡슐화(encapsulation)
     * 작성된 코드 재사용
   * 정보 은닉(data hiding)
-    * 체의 실제 구현내용을 외부에서 알지 못하도록 감춤
+    * 객체의 실제 구현내용을 외부에서 알지 못하도록 감춤
+    * 사용자에게 불필요한 정보를 감춤
     * 객체의 인터페이스를 통해서만 데이터에 접근 가능
     * 보안 강화
   * 상속성(inheritance)
     * 클래스 간의 계층 관계를 만들어 논리적이고 체계적으로 다른 클래스의 기능과 데이터를 사용할 수 있도록 함
   * 다형성(polymorphism)
-    * 하나의 변수나 함수 이름이 상황에 따라 다른 의미로 해석될 수 있도록 함
+  * 하나의 변수나 함수 이름이 상황에 따라 다른 의미로 해석될 수 있도록 함
+  
+
+### 상속(inheritance)
+
+* 기존의 클래스에 기능을 추가하거나 재정의하여 새로운 클래스를 만드는 것
+
+* 클래스 간의 계층 관계를 만듬
+
+* 상속을 이용하여 기존에 정의되어 있는 클래스의 public, protected에 해당하는 모든 property와 method를 물려받아 새로운 클래스 생성함
+
+  * parent class(부모 클래스)/super class(상위 클래스)
+    * 기존에 미리 정의되어 있던 클래스
+  * child class(자식 클래스)/sub class(하위 클래스)
+
+* `extend`
+
+* 정의
+
+  ```php
+  class [CHILDCLASSNAME] extends [PARENTCLASSNAME]
+  {
+      [CHILDCLASSNAME] 클래스만의 property와 method;
+  }
+  ```
+
+* 자식 클래스에서 중복되는 부분 제거 가능
+
+* 기존에 작성된 클래스 재활용 가능
+
+* 하나의 부모 클래스가 여러 자식 클래스 가질 수 있음
+
+* 자식클래스는 하나의 부모 클래스만 가질 수 있음
+
+### 오버라이딩(overriding)
+
+* 이미 정의된 메소드를 같은 이름의 메소드로 다시 정의함
+
+* method overriding
+
+  * 상속받은 부모 클래스의 메소드를 재정의하여 사용하는 것
+
+  ```php
+  class A
+  {
+      public $property = "class A";
+      public function showProperty()
+      {
+          echo $this->property."\n";
+      }
+  }
+  
+  class B extends A                    // 클래스 A를 상속 받음.
+  {
+      public $property = "class B";
+      public function showProperty()   // 클래스 A의 메소드를 오버라이딩
+      {
+          echo "hello ".$this->property."\n";
+      }
+  }
+  
+  $a = new A();
+  $a->showProperty();                  // 클래스 A의 메소드 호출 // class A
+  $b = new B();
+  $b->showProperty();                  // 클래스 B의 메소드 호출 // hello class B
+  ```
+
+### 정적 멤버(static member)
+
+#### static 키워드
+
+* 클래스를 정의할 때 static 키워드를 사용한 property와 method는 해당 클래스의 instance를 생성하지 않아도 접근 가능
+
+* 특징
+
+  * static property는 인스턴스화된 객체에서 접근 불가
+  * static method는 인스턴스화된 객체에서 접근 가능
+  * static method내에서는 `$this`  의사 변수 사용 불가
+
+  ```php
+  class StaticMember
+  {
+      public static $staticProperty = "static property";
+      public static function showProperty()
+      {
+          echo self::$staticProperty."\n";
+      }
+  }
+  
+  echo StaticMember::showProperty();  // 호출 가능 // static property
+  echo StaticMember::$staticProperty . "\n"; // 접근 가능 // static property
+  
+  $var = new StaticMember();          // 인스턴스 생성
+  echo $var->showProperty();          // 호출 가능 // static property
+  
+  //echo $var->$staticProperty;       // 접근 불가능
+  ```
+
+#### 범위 지정 연산자(::)
+
+* 클래스의 정의 내에서 property 또는 method를 사용하고 싶은 경우
+
+* 클래스의 상수, 정적(static)멤버 또는 재정의된 멤버에 접근 가능하게 함
+
+* 클래스의 정의 외부에서 클래스에 접근하는 경우
+
+  ```php
+  [CLASSNAME]::[CONSTANTNAME];
+  [CLASSNAME]::$[PROPERTYNAME];
+  [CLASSNAME]::[METHODNAME]();
+  ```
+
+* 클래스의 정의 내에서 특정 property 또는 metho에 접근하는 경우
+
+  * `self` : 자기 자신에 접근
+  * `parent` : 부모 클래스에 접근
+
+  ```php
+  self::$[PROPERTYNAME];
+  parent::[CONSTANTNAME];
+  ```
+
+### 인터페이스
+
+#### 추상 메소드(abstract method)
+
+* 자식 클래스에서 overriding 해야만 사용 가능한 method
+
+* 선언부만 존재함(구현부 없음)
+
+* 작성되어 있지 않은 구현부를 자식 클래스에서 오버라이딩 하여 사용함
+
+* 문법
+
+  ```php
+  abstract 접근제어자 fuction [METHODNAME]();
+  ```
+
+### 추상 클래스(abstract class)
+
+* 최소 하나 이상의 추상 메소드를 포함하는 클래스
+
+* 다형성을 가진 method의 집합 정의해줌
+
+* 반드시 사용되어야 하는 method를 추상 메소드로 선언해 놓으면, 이 클래스를 상속받는 모든 클래스에서는 이 추상 메소드를 반드시 재정의해야함
+
+* 상속을 통해 자식 클래스를 만들고 만든 자식 클래스에서 추상 클래스의 모든 추상 메소드를 오버라이딩한 후, 자식 클래스의 인스턴스 생성 가능
+
+  ```php
+  abstract class AbstractClass            // 추상 클래스
+  {
+      abstract protected function move(); // 추상 메소드
+  
+      abstract protected function stop();
+      
+      public function start() // 공통 메소드
+  
+      {
+  		...
+      }
+  }
+  ```
+
+  * 동작이 정의되어 있지 않은 추상 메소드를 포함하고 있으므로 인스턴스 생성 불가
+
+### 인터페이스(interface)
+
+* 다른 클래스를 작성할 때 기본이 되는 틀 제공
+
+* 다른 클래스 사이의 중간 매개 역할을 담당
+
+* 일종의 추상 클래스
+
+* 인터페이스를 사용하면, 클래스가 반드시 구현해야 할 메소드가 어떻게 동작하는지 알 필요 없이 다른 부분의 코드 작성 가능
+
+* 메소드의 구현부가 정의되어 있지 않은 추상 메소드들로 구성되어 있음
+
+* 내부의 모든 추상 메소드는 public method
+
+* `interface` 키워드
+
+* 문법
+
+  ```php
+  interface [INTERFACENAME]
+  {
+      구현할 메소드;
+  }
+  ```
+
+* `implements` 키워드를 사용하여 구현함
+
+* interface를 구현하는 클래스는 인터페이스의 모든 method를 구현해야함, 이렇게 구현되는 메소드는 interface에서 정의된 형태와 완전히 같은 형태로 정의되어야 함
+
+* interface의 모든 method는 클래스 안에서 모두 구현되어야 함
+
+  ```php
+  interface Transport              // 인터페이스의 정의
+  {
+      public function move();      // 구현할 메소드
+      public function stop();
+  }
+  
+  class Car implements Transport   // Transport 인터페이스를 구현하는 Car 클래스
+  {
+      function move()              // 메소드 구현
+      {
+          ...
+      }
+  
+      function stop()              // 메소드 구현
+      {
+          ...
+      }
+  }
+  ```
+
+* 클래스처럼 `extends` 키워드를 사용하여 상속받을 수 있음
+
+  ```php
+  interface Transport                  // 인터페이스의 정의
+  {
+      public function move();          // 구현할 메소드
+  
+      public function stop();          // 구현할 메소드
+  }
+  
+  
+  interface Overland extends Transport // Transport 인터페이스를 상속받는 Overland 인터페이스
+  {
+      public function highpass();      // 구현할 메소드
+  }
+  
+  class Car implements Overload        // Overland 인터페이스를 구현하는 Car 클래스
+  {
+      function move()                  // 메소드 구현
+      {
+          ...
+      }
+  
+      function stop()                  // 메소드 구현
+      {
+          ...
+      }
+  
+      function highpass()              // 메소드 구현
+      {
+          ...
+      }
+  }
+  ```
+
+* 각각의 interface를 쉼표(`,`)로 구분하여 여러 개의 interface를 동시에 상속받을 수 있음
+
+### 오버로딩
+
+#### 다형성(polymorphism)
+
+* 하나의 property가 여러 가지 상태를 가질 수 있는 것
+* overloading과 late static bindings을 통해 다형성을 구현함
+
+#### 오버로딩(overloading)
+
+* property 또는 method를 동적으로 생성함
+* overloading으로 생성된 멤버는 해당 클래스의 magic method를 통해 다양한 형태로 처리 가능
+* overloading되는 method는 반드시 public로 정의되어야 함
+
+#### 프로퍼티 오버로딩(property overloading)
+
+* inaccessible property를 오버로딩하기 위해 아래와 같은 매직 메소드를 구현해야함
+
+  * inaccessible property : 현재 영역에서는 정의되어 있지 않거나, 접근 제어로 인해 보이지 않는 프로퍼티를 의미함
+
+* magic methon 원형
+
+  ```php
+  public void __set(string $name, mixed $value)
+  public mixed __get(string $name)
+  public bool __isset(string $name)
+  public bool __unset(string $name)
+  ```
+
+  * `__set()` : 접근 불가 프로퍼티의 값을 설정할 때 호출됨
+  * `__get()` : 접근 불가 프로퍼티의 값을 읽을 때 호출됨
+  * `__isset()` : 접근 불가 프로퍼티에 대해 isset() 함수 또는 empty() 함수가 호출될 때 호출됨
+  * `__unset()` : 접근 불가 프로퍼티에 대해 unset() 함수가 호출될 때 호출됨
+
+  ```php
+  class PropertyOverloading
+  {
+      private $data = array(); // 오버로딩된 변수가 저장될 배열 생성
+      public $declared = 10;   // public으로 선언된 프로퍼티
+      private $hidden = 20;    // private로 선언된 프로퍼티
+  
+      public function __set($name, $value)
+      {
+          echo "$name 프로퍼티를 {$value}의 값으로 생성합니다!(__set)\n";
+          $this->data[$name] = $value;
+      }
+  
+      public function __get($name)
+      {
+          echo "$name 프로퍼티의 값을 읽습니다!(__get)\n";
+          if (array_key_exists($name, $this->data)) {
+              return $this->data[$name];
+          } else {
+              return null;
+          }
+      }
+  
+      public function __isset($name)
+      {
+          echo "$name 프로퍼티가 설정되어 있는지 확인합니다!(__isset)\n";
+          return isset($this->data[$name]);
+      }
+  
+      public function __unset($name)
+      {
+          echo "$name 프로퍼티를 해지합니다!(__unset)\n";
+          unset($this->data[$name]);
+      }
+  }
+  
+  $obj = new PropertyOverloading(); // PropertyOverloading 객체 생성
+  
+  $obj->prop = 1;              // 동적 프로퍼티 생성 // prop 프로퍼티를 1의 값으로 생성합니다!
+  
+  echo $obj->prop;             // 동적 프로퍼티에 접근 // prop 프로퍼티의 값을 읽습니다!
+  
+  var_dump(isset($obj->prop)); // 동적 프로퍼티로 isset() 함수 호출 // 1prop 프로퍼티가 설정되어 있는지 확인합니다! bool(true)
+  
+  unset($obj->prop);           // 동적 프로퍼티로 unset() 함수 호출 // prop 프로퍼티를 해지합니다!(__unset)
+  var_dump(isset($obj->prop)); // 동적 프로퍼티로 isset() 함수 호출 // prop 프로퍼티가 설정되어 있는지 확인합니다!(__isset) bool(false)
+  echo $obj->declared; // 선언된 프로퍼티는 오버로딩을 사용하지 않음. // 10 // 일반적인 방법으로 선언된 프로퍼티로 접근할 때 __get() 메소드 호출하지 않음
+  echo $obj->hidden;   // private로 선언된 프로퍼티는 클래스 외부에서 접근할 수 없으므로, 오버로딩을 사용함. // hidden 프로퍼티의 값을 읽습니다!(__get) // __get() 메소드 호출함
+  ```
+
+#### 메소드 오버로딩(method overloading)
+
+* inaccessible method를 오버로딩하기 위해 아래와 같은 매직 메소드를 구현해야 함
+
+* magic method의 원형
+
+  ```php
+  public mixed __call(string $name, array $arguments)
+  public static mixed __callStatic(string $name, array $arguments)
+  ```
+
+  * `__call()` : 클래스 영역에서 접근 불가 메소드를 호출할 때 호출됨
+  * `__callStatic()` : 정적(static) 영역에서 접근 불가 메소드를 호출할 때 호출됨
+
+  ```php
+  class MethodOverloading
+  {
+      public function __call($name, $arguments)
+      {
+          echo join(", ", $arguments)."에서 접근 불가 메소드를 호출합니다!\n";
+      }
+  
+      public static function __callStatic($name, $arguments)
+      {
+          echo join(", ", $arguments)."에서 접근 불가 메소드를 호출합니다!\n";
+      }
+  }
+  
+  $obj = new MethodOverloading();             // MethodOverloading 객체 생성
+  $obj->testMethod("클래스 영역");            // 클래스 영역에서 접근 불가 메소드 호출 // 클래스 영역에서 접근 불가 메소드를 호출합니다!
+  MethodOverloading::testMethod("정적 영역"); // 정적 영역에서 접근 불가 메소드 호출 // 정적 영역에서 접근 불가 메소드를 호출합니다!
+  ```
+
+### 늦은 정적 바인딩
+
+#### 바인딩(binding)
+
+* 프로그램에 사용된 구성 요소의 실제 값 또는 프로퍼티를 결정짓는 행위
+  * static binding : 실행 시간 전에 일어나고, 실행 시간에는 변하지 않은 상태로 유지되는 바인딩
+  * dynamic binding : 실행 시간에 이루어지거나 실행 시간에 변경되는 바인딩으로, late binding 이라고도 불림
+* php에서는 static binding 과 dynamic binding의 중간 정도 수준인 늦은 정적 바인딩(LSB)를 제공함
+
+#### 늦은 정적 바인딩(late static bindings, LSB)
+
+* static 키워드와 범위 지정 연산자(::)를 사용하여 수행함
+* 마지막으로 호출한 비전송 호출(non-forwarding call)의 클래스 이름을 저장하여 동작함
+  * 정적 메소드 호출에서는 범위 지정 연산자(::) 좌측에 명시된 클래스 이름을 저장함
+  * 비정적 메소드 호출에서는 해당 객체의 클래스 이름을 저장함
+* `static::`
+  * 늦은 바인딩 : 정의된 클래스를 컴파일 시간에 결정할 수 없고, 프로그램 실행 시 전달되는 정보로 결정함
+  * 정적 바인딩 : 정적 메소드 호출에 사용 가능함
+* 
+
+#### 정적 메소드 호출에서의 늦은 정적 바인딩
+
+* self 키워드와 범위 지정 연산자(::)를 사용하여 정적 메소드를 호출함
+
+  ```php
+  class A
+  {
+      public static function className()
+      {
+          echo __CLASS__;
+      }
+  
+      public static function printClass()
+      {
+          self::className();
+      }
+  }
+  
+  class B extends A
+  {
+      public static function className()
+      {
+          echo __CLASS__;
+      }
+  }
+  
+  B::printClass(); // A
+  ```
+
+  
+
+* `array_key_exists()`
+  * 인수로 전달받은 키가 해당 배열에 저장되어 있으면 true 반환함
 
 * `declare()`
 
