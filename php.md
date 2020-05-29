@@ -3300,7 +3300,7 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
   
   echo $object->publicVar;      // 접근 가능
   //echo $object->protectedVar; // 접근 불가능
-  //echo $object->privatev;     // 접근 불가능
+  //echo $object->privateVar;     // 접근 불가능
   
   $object->publicMethod();      // 호출 가능 // public method
   //$object->protectedMethod(); // 호출 불가능
@@ -3744,7 +3744,6 @@ function [FUNCTIONNAME]($[PARAMETER1], $[PARAMETER2], ...)
 * `static::`
   * 늦은 바인딩 : 정의된 클래스를 컴파일 시간에 결정할 수 없고, 프로그램 실행 시 전달되는 정보로 결정함
   * 정적 바인딩 : 정적 메소드 호출에 사용 가능함
-* 
 
 #### 정적 메소드 호출에서의 늦은 정적 바인딩
 
